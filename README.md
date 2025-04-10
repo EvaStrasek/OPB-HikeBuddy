@@ -1,7 +1,7 @@
 # 📌 HikeBuddy – Spletna aplikacija za planince
 
 ## 🎯 Namen projekta
-Projektna naloga pri predmetu **Podatkovne baze** zajema načrtovanje in implementacijo spletne aplikacije **HikeBuddy**, ki omogoča organizacijo pohodov s strani vodnikov ter prijavo in sodelovanje uporabnikov. Sistem vključuje ocenjevanje vodnikov, informacije o pohodu, opremo ter sledenje udeležencem.
+Projektna naloga pri predmetu **Osnove podatkovnih baz** zajema načrtovanje in implementacijo spletne aplikacije **HikeBuddy**, ki omogoča organizacijo pohodov s strani vodnikov ter prijavo in sodelovanje uporabnikov. Sistem vključuje ocenjevanje vodnikov, informacije o pohodu, opremo ter sledenje udeležencem.
 
 ---
 
