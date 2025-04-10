@@ -14,3 +14,4 @@ Projektna naloga pri predmetu **Podatkovne baze** zajema načrtovanje in impleme
 - Sistem vodi evidenco **povprečne ocene vodnika** ter povezavo med pohodi, uporabniki in opremo.
 
 ---
+![image](https://github.com/user-attachments/assets/1e27b35b-84ca-4707-98e2-d87cd38548ae)
