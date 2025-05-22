@@ -1,0 +1,26 @@
+%rebase('osnova.html', naslov='Urejanje pohoda', stran='uredi_pohod')
+
+
+
+  <form action="{{url('/uredi_pohod')}}" method="POST", style="width: 60%; margin-left: 5%;">
+    <input type="hidden" name="id" value="{{pohod.id}}">
+    <div class="form-group">
+
+        <label for="pohod">Ime pohoda</label>      
+        <!-- dokončaj pa še zahtevnost trajanje... -->
+     </div>
+     <div class="form-group">
+      <label for="datum">Datum</label>
+      <input type="datetime-local" class="form-control" name="cas" id="cas" value="{{pohod.datum.strftime('%Y-%m-%dT%H:%M')}}">
+  </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Znesek</label>
+        <input class="form-control" type="number" step="0.001" name="znesek" value="{{transakcija.znesek}}">      
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Opis</label>
+        <textarea class="form-control" name="opis">{{pohod.opis}}</textarea>    
+    </div>      
+    
+    <button type="submit" class="btn btn-primary">Posodobi pohod</button>
+  </form>

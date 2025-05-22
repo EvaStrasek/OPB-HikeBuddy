@@ -1,0 +1,56 @@
+%rebase('osnova.html', naslov='Pohodi', stran='pohodi')
+
+<div >
+  <h2>Seznam vseh pohodov</h2>
+    <a  href="{{url('/dodaj_pohod')}}" class="btn btn-light">
+        Dodaj nov pohod
+     </a>
+       <br>
+      <br>  
+    <div style="display: flex;">
+
+    <div style="flex:1;">
+      <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Ime pohoda</th>
+                <th>Datum</th>
+                <th>Zahtevnost</th>  
+                <th>Začetna lokacija</th>  
+                <th>Trajanje</th>
+                <th>Višinska razlika</th>
+                <th>Opis</th>
+                <th>Lokacija</th>   
+             </tr>
+        </thead>
+     
+      %for pohod in pohodi:
+        <tr>
+           <td>{{pohod.ime_pohoda}}</td>           
+           <td>{{pohod.datum}}</td>
+           <td>{{pohod.zahtevnost}}</td>
+           <td>{{pohod.zacetna_lokacija}}</td>
+           <td>{{pohod.visinska_razlika_m}}</td>
+           <td>{{pohod.opis}}</td>
+           <td>{{pohod.lokacija}}</td>
+           <td>
+            <a href="{{url('uredi_pohod', id=pohod.id)}}"> Uredi</a>
+           </td>
+     
+        </tr>
+      %end
+      </table>
+
+
+
+    </div>    
+
+    </div>
+   
+</div>
+
+
+  
+
+  

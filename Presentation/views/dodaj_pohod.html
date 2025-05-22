@@ -1,0 +1,53 @@
+%rebase('osnova.html', naslov='Dodaj pohod', stran='dodaj_pohod')
+
+
+<form action="{{url('/dodaj_pohod')}}" method="POST", style="width: 60%; margin-left: 5%;">
+    <div class="form-group">
+        <label for="obstojeci">Izberi pohod:</label>
+        <select class="form-control" id="obstojeci" name="obstojeci_pohod">
+            % for pohod in pohodi:
+                <option value="{{pohod.id}}">{{pohod.ime}}</option>
+            % end
+            <option value="nov">+ Dodaj nov pohod</option>
+        </select>
+    </div>
+
+    <div id="novPohod" style="display: none;">
+        <hr>
+        <h5>Dodaj nov pohod</h5>
+        <div class="form-group">
+            <label for="naziv">Ime pohoda</label>
+            <input type="text" class="form-control" name="naziv" id="naziv">
+    </div>
+    <div class="form-group">
+        <label for="datum">Datum</label>
+        <input type="date" class="form-control" name="datum" id="datum">    
+    </div>
+    <div class="form-group">
+        <label for="zacetna_lokacija">Začetna lokacija</label>
+        <textarea class="form-control" type="text" name="zacetna_lokacija"></textarea>      
+    </div>
+    <div class="form-group">
+        <label for="zahtevnost">Zahtevnost</label>
+        <textarea class="form-control" type="text" name="zahtevnost"></textarea>      
+    </div>
+    <div class="form-group">
+        <label for="trajanje_ur">Trajanje</label>
+        <textarea class="form-control" type="number" name="trajanje_ur"></textarea>      
+    </div>
+    <div class="form-group">
+        <label for="visinska_razlika_m">Višinska razlika</label>
+        <textarea class="form-control" type="number" name="visinska_razlika_m"></textarea>      
+    </div>
+    <div class="form-group">
+        <label for="opis">Opis</label>
+        <textarea class="form-control" type="text" name="opis"></textarea>      
+    </div>
+    <div class="form-group">
+        <label for="lokacija">Lokacija</label>
+        <textarea class="form-control" type="text" name="lokacija"></textarea>      
+    </div>
+    <br>
+    
+    <button type="submit" class="btn btn-primary mt-3">Dodaj pohod</button>
+  </form>
