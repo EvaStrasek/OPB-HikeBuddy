@@ -17,14 +17,18 @@ conn = psycopg2.connect(database=database, host=host, port=port, user=user, pass
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
-def ustvari_tabelo_pohodi(ime_tabele : str) -> None:
+def ustvari_tabelo_poti(ime_tabele : str) -> None:
     cur.execute(f"""
         DROP table if exists {ime_tabele};
         CREATE table if not exists  {ime_tabele}(  
             id SERIAL PRIMARY KEY,
-            datum_zacetka DATE,
-            datum_konca DATE,
-            pot INTEGER
+            ime TEXT,
+            zacetna_lokacija TEXT,
+            zahtevnost TEXT,
+            trajanje_ur INTEGER,
+            visinska_razlika_m INTEGER,
+            opis TEXT,
+            lokacija TEXT
         );
     """)
     conn.commit()
@@ -34,40 +38,30 @@ def preberi_csv(ime_datoteke : str) -> pd.DataFrame:
 
     return df
 
-def preimenuj_stolpce_pohodov(df: pd.DataFrame) -> pd.DataFrame:
+def preimenuj_stolpce_poti(df: pd.DataFrame) -> pd.DataFrame:
     """
     Funkcija preimenuje stolpce v DataFrame-u, da ustrezajo camelCase konvenciji.
     """
     df = df.rename(columns={
             "Id": "id",
-            "Datum začetka": "datum_zacetka",
-            "Datum konca": "datum_konca",
-            "Pot": "pot"
+            "Ime pohoda": "ime",
+            "Začetna lokacija": "zacetna_lokacija",
+            "Zahtevnost": "zahtevnost",
+            "Trajanje (h)": "trajanje_ur",
+            "Višinska razlika (m)": "visinska_razlika_m",
+            "Opis": "opis",
+            "Lokacija": "lokacija"
         }
     ) 
     return df
 
 
-def transformiraj_pohode(df: pd.DataFrame) -> pd.DataFrame:
+def transformiraj_poti(df: pd.DataFrame) -> pd.DataFrame:
 
-    # Pretvorba stolpca subscription_date v datum:
-    df['datum_zacetka'] = pd.to_datetime(df['datum_zacetka'], errors='coerce')
-        # Odstrani vrstice z manjkajočimi datumi
-    df = df[pd.notnull(df['datum_zacetka'])]
-
-    df['datum_konca'] = pd.to_datetime(df['datum_konca'], errors='coerce')
-        # Odstrani vrstice z manjkajočimi datumi
-    df = df[pd.notnull(df['datum_konca'])]
-
-    # Pretvori datetime v date, saj PostgreSQL tabela uporablja DATE, ne TIMESTAMP
-    df['datum_zacetka'] = df['datum_zacetka'].apply(lambda x: x.date())
-    df['datum_konca'] = df['datum_konca'].apply(lambda x: x.date())
-    # Če je vrednost neveljaven datum, se pretvori v None; sicer pretvorimo v Python date objekt
-    #df['subscription_date'] = df['subscription_date'].apply(lambda x: x.date() if pd.notnull(x) else None)
-    
     # Definiramo vrstni red stolpcev, kot so definirani v tabeli
     columns = [
-        "id", "datum_zacetka", "datum_konca", "pot"
+        "id", "ime",
+        "zacetna_lokacija", "zahtevnost", "trajanje_ur", "visinska_razlika_m", "opis", "lokacija"
     ]
     
     # Poskrbimo, da DataFrame vsebuje točno te stolpce v pravem vrstnem redu
@@ -76,20 +70,20 @@ def transformiraj_pohode(df: pd.DataFrame) -> pd.DataFrame:
 
 def zapisi_df(df: pd.DataFrame) -> None:
 
-    ime_tabele = "pohodi2"
+    ime_tabele = "poti"
 
     # Poskrbimo, da tabela obstaja
-    ustvari_tabelo_pohodi(ime_tabele)
+    ustvari_tabelo_poti(ime_tabele)
     
     # Če DataFrame nima stolpca 'Index', ga dodamo iz indeksa
     df = df.reset_index()
 
     # Prvi korak: Stolpci v csvju so drugače poimenovani,
     # kot bi si jih želeli imeti v bazi.
-    df = preimenuj_stolpce_pohodov(df)
+    df = preimenuj_stolpce_poti(df)
     
     # Transformiramo podatke v DataFrame-u
-    df = transformiraj_pohode(df)
+    df = transformiraj_poti(df)
     
     # shranimo stolpce v seznam
     columns = df.columns.tolist()
@@ -115,7 +109,7 @@ def zapisi_df(df: pd.DataFrame) -> None:
 if __name__ == "__main__":
     # Preberi CSV datoteko, pri čemer privzamemo, da je datoteka
     # "customers-100.csv" v isti mapi kot tvoj skript ali podaj absolutno pot.
-    df = preberi_csv("Data/pohodi.csv")
+    df = preberi_csv("Data/poti.csv")
     
     # Zapiši podatke iz DataFrame-a v tabelo "customers"
     zapisi_df(df)

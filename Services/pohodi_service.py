@@ -20,9 +20,18 @@ class PohodiService:
     def dobi_pohod(self, id) -> pohod:
         return self.repo.dobi_pohod(id)
     
-    def dobi_pohod_dto(self) -> List[pohodDto]:
-        return self.repo.dobi_pohod_dto()
+    def dobi_pohod_dto(self, id) -> pohodDto:
+        return self.repo.dobi_pohod_dto(id)
     
+    def dodaj_pohod(self, datum_zacetka : datetime, datum_konca: datetime, pot: int) -> None:
+       
+        t = pohod(
+            datum_zacetka=datum_zacetka,
+            datum_konca=datum_konca,
+            pot=pot,
+            )        
+        # uporabimo repozitorij za zapis v bazo
+        self.repo.dodaj_pohod(t)
 
     # def naredi_transakcijo_oseba(self, o : oseba, znesek: float, opis: str) -> None:
        

@@ -1,7 +1,7 @@
-Id,Ime pohoda,Datum,Začetna lokacija,Zahtevnost,Trajanje (h),Višinska razlika (m),Opis,Lokacija
-1,Pohod na Ahac iz Črnih njiv,2024-07-15,Črne njive,lahka neoznačena pot,1,189,Kratek pohod na Ahac,Goriško Notranjsko in Snežniško hribovje
-2,Pohod na Ahac iz Jasni,2024-06-01,Jasen,lahka neoznačena pot,1,377,Kratek pohod na Ahac,Goriško Notranjsko in Snežniško hribovje
-3,Pohod na Ahac iz Šembij,2024-04-18,Šembije,lahka označena pot,2,202,Kratek pohod na Ahac,Goriško Notranjsko in Snežniško hribovje
-4,Pohod na Ahac iz Vrbišk,2024-03-05,Vrbiški dol,lahka neoznačena pot,1,21,Kratek pohod na Ahac,Goriško Notranjsko in Snežniško hribovje
-5,Pohod na Ahac iz Vrbovo,2024-01-21,Vrbovo,lahka neoznačena pot,1,379,Kratek pohod na Ahac,Goriško Notranjsko in Snežniško hribovje
-6,Pohod na Ahac iz Žvanov,2023-12-08,Žvanov dol,lahka neoznačena pot,1,69,Kratek pohod na Ahac,Goriško Notranjsko in Snežniško hribovje
+Id,Datum začetka,Datum konca,Pot
+1,2024-07-15,2024-07-16,1
+2,2024-06-01,2024-06-02,2
+3,2024-04-18,2024-04-18,3
+4,2024-03-05,2024-03-05,4
+5,2024-01-21,2024-01-21,5
+6,2023-12-08,2023-12-08,6

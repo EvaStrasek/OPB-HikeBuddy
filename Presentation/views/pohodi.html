@@ -3,7 +3,7 @@
 <div >
   <h2>Seznam vseh pohodov</h2>
     <a  href="{{url('/dodaj_pohod')}}" class="btn btn-light">
-        Dodaj nov pohod
+        Dodaj novo pot
      </a>
        <br>
       <br>  
@@ -14,8 +14,7 @@
         <thead>
             <tr>
                 
-                <th>Ime pohoda</th>
-                <th>Datum</th>
+                <th>Ime poti</th>
                 <th>Zahtevnost</th>  
                 <th>Začetna lokacija</th>  
                 <th>Trajanje</th>
@@ -27,14 +26,7 @@
      
       %for pohod in pohodi:
         <tr>
-           <td>{{pohod.ime_pohoda}}</td>           
-           <td>{{pohod.datum}}</td>
-           <td>{{pohod.zahtevnost}}</td>
-           <td>{{pohod.zacetna_lokacija}}</td>
-           <td>{{pohod.trajanje_ur}}</td>
-           <td>{{pohod.visinska_razlika_m}}</td>
-           <td>{{pohod.opis}}</td>
-           <td>{{pohod.lokacija}}</td>
+           <td>{{pohod.datum_zacetka}}</td>
            <td>
             <a href="{{url('uredi_pohod', id=pohod.id)}}"> Uredi</a>
            </td>

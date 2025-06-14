@@ -1,0 +1,43 @@
+%rebase('osnova.html', naslov='Pohodi Dto', stran='pohodi_dto')
+
+<div >
+   
+      <br>  
+    <div style="display: flex;">
+    <div style="flex:1;">
+      <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Ime poti</th>
+                <th>Zahtevnost</th>
+                <th>Začetna lokacija</th>
+                <th>Trajanje (ur)</th>
+                <th>Višinska razlika (m)</th>  
+                <th>Opis</th>
+                <th>Lokacija</th>  
+                <th>Uredi</th>   
+             </tr>
+        </thead>
+     
+      %for pot in poti:
+        <tr>
+           <td>{{pot.ime_pohoda}}</td>
+           <td>{{pot.zahtevnost}}</td>
+           <td>{{pot.zacetna_lokacija}}</td>
+           <td>{{pot.trajanje_ur}}</td>
+           <td>{{pot.visinska_razlika_m}}</td>
+           <td>
+            <a href="{{url('uredi_pohod', id=pot.id)}}"> uredi</a>
+           </td>
+     
+        </tr>
+      %end
+      </table>
+
+
+    </div>    
+
+    </div>
+   
+</div>

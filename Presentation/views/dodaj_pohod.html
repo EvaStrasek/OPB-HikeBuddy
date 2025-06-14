@@ -3,14 +3,22 @@
 
 <form action="{{url('/dodaj_pohod')}}" method="POST", style="width: 60%; margin-left: 5%;">
     <div class="form-group">
-        <label for="obstojeci">Izberi pohod:</label>
-        <select class="form-control" id="obstojeci" name="obstojeci_pohod">
-            % for pohod in pohodi:
-                <option value="{{pohod.id}}">{{pohod.ime}}</option>
+        <label for="pot">Izberi pot:</label>
+        <select class="form-control" id="pot" name="pot">
+            % for pot in poti:
+                <option value="{{pot.id}}">{{pot.ime}}</option>
             % end
-            <option value="nov">+ Dodaj nov pohod</option>
+            <!-- <option value="nov">+ Dodaj nov pohod</option> -->
         </select>
+
+        <label for="datum_zacetka">Datum začetka</label>
+        <input type="date" class="form-control" id="datum_zacetka" name="datum_zacetka"></input>
+
+        <label for="datum_konca">Datum konca</label>
+        <input type="date" class="form-control" id="datum_konca" name="datum_konca"></input>
     </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Dodaj pohod</button>
 
     <div id="novPohod" style="display: none;">
         <hr>
@@ -48,6 +56,4 @@
         <textarea class="form-control" type="text" name="lokacija"></textarea>      
     </div>
     <br>
-    
-    <button type="submit" class="btn btn-primary mt-3">Dodaj pohod</button>
   </form>

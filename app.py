@@ -1,7 +1,9 @@
+import datetime
 from functools import wraps
 from Presentation.bottleext import get, post, run, request, template, redirect, static_file, url, response, template_user
 
 from Services.pohodi_service import PohodiService
+from Services.poti_service import PotiService
 from Services.auth_service import AuthService
 import os
 
@@ -9,9 +11,9 @@ import os
 # Če je število servisov veliko, potem je service bolj smiselno inicializirati v metodi in na
 # začetku datoteke (saj ne rabimo vseh servisov v vseh metodah!)
 
-service = PohodiService()
+pohodiService = PohodiService()
+potiService = PotiService()
 auth = AuthService()
-
 
 # privzete nastavitve
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
@@ -42,9 +44,9 @@ def index():
     Domača stran s pohodi.
     """   
   
-    pohodi_dto = service.dobi_pohode_dto() 
+    pohodi = pohodiService.dobi_pohode_dto() 
 
-    return template_user('pohodi.html', pohodi = pohodi_dto)
+    return template_user('pohodi.html', pohodi = pohodi)
 
 # @get('/osebe')
 # @cookie_required
@@ -58,57 +60,91 @@ def index():
 
 
 
-# @get('/transakcije_dto')
-# def transakcije_dto():
-#     """
-#     Stran z dto transakcijami.
-#     """   
+@get('/pohodi_dto')
+def poti_dto(): 
   
-#     transakcije_dto = service.dobi_transakcije_dto()  
+    poti_dto = potiService.dobi_poti_dto()  
         
-#     return template_user('transakcije_dto.html', transakcije = transakcije_dto)
+    return template_user('pohodiDto.html', poti = poti_dto)
 
-@get('/dodaj_pohod')
-def dodaj_pohod():
+@get('/dodaj_pot')
+def dodaj_pot():
     """
     Stran za dodajanje pohodov.  """
-    pohodi = service.dobi_pohode_dto()    
-    return template_user('dodaj_pohod.html', pohodi=pohodi)
+    poti = potiService.dobi_poti_dto()    
+    return template_user('dodaj_pot.html', poti=poti)
 
 
-# @post('/dodaj_transakcijo')
-# def dodaj_transakcijo_post():
-#     # Preberemo podatke iz forme. Lahko bi uporabili kakšno dodatno metodo iz service objekta
+@post('/dodaj_pot')
+def dodaj_pot_post():
+# Preberemo podatke iz forme. Lahko bi uporabili kakšno dodatno metodo iz service objekta
 
-#     racun = int(request.forms.get('racun'))
-#     znesek = float(request.forms.get('znesek'))
-#     opis = request.forms.get('opis')
-#     cas = request.forms.get('cas')   
+    ime = int(request.forms.get('ime'))
+    zahtevnost = float(request.forms.get('zahtevnost'))
+    zacetna_lokacija = float(request.forms.get('zacetna_lokacija'))
+    trajanje_ur = float(request.forms.get('trajanje_ur'))
+    visinska_razlika_m = float(request.forms.get('visinska_razmika_m'))
+    opis = request.forms.get('opis')
+    lokacija = float(request.forms.get('lokacija'))   
 
-#     service.naredi_transakcijo(racun, cas, znesek, opis)
+    potiService.naredi_pot(ime, zahtevnost, zacetna_lokacija, trajanje_ur, visinska_razlika_m, opis, lokacija)
     
     
-#     redirect(url('/'))
+    redirect(url('/'))
+
+@get('/uredi_pot/<id:int>')
+def uredi_pot(id):
+    """
+    Stran za urejanje poti.  """   
+    pot = potiService.dobi_poti_dto(id)
+    return template_user('uredi_pohod.html', pot = pot)
 
 @get('/uredi_pohod/<id:int>')
 def uredi_pohod(id):
     """
     Stran za urejanje pohoda.  """   
-    pohod = service.dobi_pohod_dto(id)
+    pohod = pohodiService.dobi_pohod_dto(id)
     return template_user('uredi_pohod.html', pohod = pohod)
 
-# @post('/uredi_transakcijo')
-# def uredi_transakcijo_post():
+@get('/dodaj_pohod')
+def dodaj_pohod():
+    """
+    Stran za dodajanje pohodov.  """
+    poti = potiService.dobi_poti_dto()    
+    return template_user('dodaj_pohod.html', poti=poti)
+
+@post('/dodaj_pohod')
+def dodaj_pohod_post():
+    datum_zacetka_str = request.forms.get('datum_zacetka')
+    datum_konca_str = request.forms.get('datum_konca')
+        
+    datum_zacetka = datetime.datetime.strptime(datum_zacetka_str, '%Y-%m-%d').date()
+    datum_konca = datetime.datetime.strptime(datum_konca_str, '%Y-%m-%d').date()
+    # datum_zacetka = datetime.strptime(request.forms.get('datum_zacetka'))
+    # datum_konca = datetime.strptime(request.forms.get('datum_konca'))
+    pot = int(request.forms.get('pot'))
+
+    pohodiService.dodaj_pohod(datum_zacetka, datum_konca, pot)
+    
+    redirect(url('/'))
+
+
+@post('/uredi_pohod')
+def uredi_pot_post():
 #     """
 #     Stran za urejanje transakcije.  """ 
-#     id = int(request.forms.get('id'))  
-#     racun = int(request.forms.get('racun'))
-#     znesek = float(request.forms.get('znesek'))
-#     opis = request.forms.get('opis')   
-#     cas = request.forms.get('cas') 
+    id = int(request.forms.get('id'))  
+    ime = request.forms.get('ime')
+    zahtevnost = request.forms.get('zahtevnost')
+    zacetna_lokacija = request.forms.get('zacetna_lokacija')
+    trajanje_ur = float(request.forms.get('trajanje_ur'))
+    visinska_razlika_m = float(request.forms.get('visinska_razlika_m'))
+    opis = request.forms.get('opis')
+    lokacija = request.forms.get('lokacija')
     
-#     service.posodobi_transakcijo(id, racun, cas, znesek, opis)
-#     redirect(url('/'))
+    potiService.posodobi_pohod(id, ime, zahtevnost, zacetna_lokacija, trajanje_ur, visinska_razlika_m,
+                            opis, lokacija)
+    redirect(url('/'))
 
 # @post('/prijava')
 # def prijava():

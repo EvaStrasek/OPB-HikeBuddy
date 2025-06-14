@@ -5,9 +5,42 @@ from datetime import datetime, date
 @dataclass_json
 @dataclass
 class pohod:
+    id: int = field(default=0),
+    datum_zacetka: date=field(default=date.today)
+    datum_konca: date=field(default=date.today)
+    pot: int = field(default=0)
+
+@dataclass_json
+@dataclass
+class pohodDto:
+    id: int = field(default=0),
+    datum_zacetka: date=field(default=date.today)
+    datum_konca: date=field(default=date.today)
+    pot: int = field(default=0)
+    udelezenci: str = field(default="")
+
+# class udelezenec:
+#     id,
+#     dogodek,
+#     ime,
+#     priimek,
+#     email,
+#     telefon
+
+# class vodnik:
+#     id,
+#     ime,
+#     priimek,
+#     email,
+#     telefon,
+#     dogodek : int = field(default=0)  
+
+@dataclass_json
+@dataclass
+class pot:
     id : int = field(default=0)  
-    ime_pohoda : str=field(default="")
-    datum: date=field(default=date.today) 
+    ime : str=field(default="")
+    #datum: date=field(default=date.today) 
     zacetna_lokacija: str=field(default="")
     zahtevnost: str=field(default="")
     trajanje_ur: float=field(default=0)
@@ -17,16 +50,17 @@ class pohod:
 
 @dataclass_json
 @dataclass
-class pohodDto:
+class potDto:
     id: int = field(default=0)  
-    ime_pohoda: str=field(default="")
-    datum: date=field(default=date.today)  
+    ime: str=field(default="")
+    # datum: date=field(default=date.today)  
     zacetna_lokacija: str=field(default="")
     zahtevnost: str=field(default="")
     trajanje_ur: float=field(default=0)
     visinska_razlika_m: float=field(default=0)
     opis: str=field(default="")
     lokacija: str=field(default="")
+    oprema: str=field(default="")
 
 @dataclass_json
 @dataclass
