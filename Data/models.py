@@ -1,30 +1,30 @@
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
-from datetime import datetime
+from datetime import datetime, date
 
 @dataclass_json
 @dataclass
-class pohodi:
+class pohod:
     id : int = field(default=0)  
     ime_pohoda : str=field(default="")
-    datum: datetime=field(default=datetime.now()) 
+    datum: date=field(default=date.today) 
     zacetna_lokacija: str=field(default="")
     zahtevnost: str=field(default="")
     trajanje_ur: float=field(default=0)
-    visinska_razlika: float=field(default=0)
+    visinska_razlika_m: float=field(default=0)
     opis: str=field(default="")
     lokacija: str=field(default="")
 
 @dataclass_json
 @dataclass
-class pohodiDto:
+class pohodDto:
     id: int = field(default=0)  
     ime_pohoda: str=field(default="")
-    datum: datetime=field(default=datetime.now()) 
+    datum: date=field(default=date.today)  
     zacetna_lokacija: str=field(default="")
     zahtevnost: str=field(default="")
     trajanje_ur: float=field(default=0)
-    visinska_razlika: float=field(default=0)
+    visinska_razlika_m: float=field(default=0)
     opis: str=field(default="")
     lokacija: str=field(default="")
 

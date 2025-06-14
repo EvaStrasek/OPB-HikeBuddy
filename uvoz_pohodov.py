@@ -1,8 +1,8 @@
-import psycopg2
-import psycopg2.extras
+import psycopg2, psycopg2.extensions, psycopg2.extras
+psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
 import pandas as pd
 from datetime import datetime
-import auth  # datoteka auth.py naj vsebuje: password = "..."
+import Data.auth as auth  # datoteka auth.py naj vsebuje: password = "..."
 
 
 # Podatki za povezavo
@@ -47,12 +47,12 @@ def preimenuj_stolpce_pohodov(df: pd.DataFrame) -> pd.DataFrame:
             "Id": "id",
             "Ime pohoda": "ime_pohoda",
             "Datum": "datum",
-            "Vstopna točka": "zacetna_lokacija",
+            "Začetna lokacija": "zacetna_lokacija",
             "Zahtevnost": "zahtevnost",
             "Trajanje (h)": "trajanje_ur",
             "Višinska razlika (m)": "visinska_razlika_m",
             "Opis": "opis",
-            "Gorovje": "lokacija"
+            "Lokacija": "lokacija"
         }
     ) 
     return df
@@ -72,8 +72,8 @@ def transformiraj_pohode(df: pd.DataFrame) -> pd.DataFrame:
     
     # Definiramo vrstni red stolpcev, kot so definirani v tabeli
     columns = [
-        "id", "ime_pohoda", "datum", "zacetna_lokacija",
-        "zahtevnost", "trajanje_ur", "visinska_razlika_m", "opis", "lokacija"
+        "id", "ime_pohoda", "datum",
+        "zacetna_lokacija", "zahtevnost", "trajanje_ur", "visinska_razlika_m", "opis", "lokacija"
     ]
     
     # Poskrbimo, da DataFrame vsebuje točno te stolpce v pravem vrstnem redu
@@ -88,7 +88,7 @@ def zapisi_df(df: pd.DataFrame) -> None:
     ustvari_tabelo_pohodi(ime_tabele)
     
     # Če DataFrame nima stolpca 'Index', ga dodamo iz indeksa
-    #df = df.reset_index()
+    df = df.reset_index()
 
     # Prvi korak: Stolpci v csvju so drugače poimenovani,
     # kot bi si jih želeli imeti v bazi.
@@ -102,9 +102,11 @@ def zapisi_df(df: pd.DataFrame) -> None:
 
     # Pretvorimo podatke v seznam tuple-ov
     records = df.values.tolist()
+
+    print(f'velikost: {records}')
     
     # Pripravimo SQL ukaz za vstavljanje podatkov
-    sql = f"INSERT INTO {ime_tabele} ({", ".join(columns)}) VALUES %s"
+    sql = f'INSERT INTO {ime_tabele} ({", ".join(columns)}) VALUES %s'
     
     # Uporabimo execute_values za množični vnos
     # Izvede po en insert ukaz na vrstico oziroma record iz seznama records
@@ -119,7 +121,7 @@ def zapisi_df(df: pd.DataFrame) -> None:
 if __name__ == "__main__":
     # Preberi CSV datoteko, pri čemer privzamemo, da je datoteka
     # "customers-100.csv" v isti mapi kot tvoj skript ali podaj absolutno pot.
-    df = preberi_csv("pohodi.csv")
+    df = preberi_csv("Data/pohodi.csv")
     
     # Zapiši podatke iz DataFrame-a v tabelo "customers"
     zapisi_df(df)
