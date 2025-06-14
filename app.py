@@ -1,7 +1,7 @@
 from functools import wraps
 from Presentation.bottleext import get, post, run, request, template, redirect, static_file, url, response, template_user
 
-from Services.transakcije_service import TransakcijeService
+from Services.pohodi_service import PohodiService
 from Services.auth_service import AuthService
 import os
 
@@ -9,7 +9,7 @@ import os
 # Če je število servisov veliko, potem je service bolj smiselno inicializirati v metodi in na
 # začetku datoteke (saj ne rabimo vseh servisov v vseh metodah!)
 
-service = TransakcijeService()
+service = PohodiService()
 auth = AuthService()
 
 
