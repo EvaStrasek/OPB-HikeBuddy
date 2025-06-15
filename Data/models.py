@@ -18,6 +18,13 @@ class pohodDto:
     datum_konca: date=field(default=date.today)
     pot: int = field(default=0)
     udelezenci: str = field(default="")
+    ime : str=field(default="")
+    zacetna_lokacija: str=field(default="")
+    zahtevnost: str=field(default="")
+    trajanje_ur: float=field(default=0)
+    visinska_razlika_m: float=field(default=0)
+    opis: str=field(default="")
+    lokacija: str=field(default="")
 
 # class udelezenec:
 #     id,
@@ -97,3 +104,16 @@ class udelezenciDto:
     priimek: str=field(default="")
     telefon: str=field(default="")
     e_mail: str=field(default="")
+
+@dataclass_json
+@dataclass
+class Uporabnik:
+    username: str = field(default="")
+    role: str = field(default="")
+    password_hash: str = field(default="")
+    last_login: str = field(default="")
+
+@dataclass
+class UporabnikDto:
+    username: str = field(default="")
+    role: str = field(default="")

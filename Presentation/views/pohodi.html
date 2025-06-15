@@ -3,7 +3,7 @@
 <div >
   <h2>Seznam vseh pohodov</h2>
     <a  href="{{url('/dodaj_pohod')}}" class="btn btn-light">
-        Dodaj novo pot
+        Dodaj nov pohod
      </a>
        <br>
       <br>  
@@ -15,18 +15,34 @@
             <tr>
                 
                 <th>Ime poti</th>
+                <th>Datum začetka</th>
+                <th>Datum konca</th>
                 <th>Zahtevnost</th>  
                 <th>Začetna lokacija</th>  
-                <th>Trajanje</th>
-                <th>Višinska razlika</th>
+                <th>Trajanje (h)</th>
+                <th>Višinska razlika (m)</th>
                 <th>Opis</th>
                 <th>Lokacija</th>   
              </tr>
         </thead>
      
+         <!-- SELECT p.id, r.ime, p.datum_zacetka, p.datum_konca, r.zacetna_lokacija, r.zahtevnost, 
+                r.trajanje_ur, r.visinska_razlika_m, r.opis, r.lokacija
+                FROM pohodi2 p
+                left join poti r on p.pot = r.id
+                Order by p.datum_zacetka desc  -->
+
       %for pohod in pohodi:
         <tr>
+           <td>{{pohod.ime}}</td>
            <td>{{pohod.datum_zacetka}}</td>
+           <td>{{pohod.datum_konca}}</td>
+           <td>{{pohod.zahtevnost}}</td>
+           <td>{{pohod.zacetna_lokacija}}</td>
+           <td>{{pohod.trajanje_ur}}</td>
+           <td>{{pohod.visinska_razlika_m}}</td>
+           <td>{{pohod.opis}}</td>
+           <td>{{pohod.lokacija}}</td>
            <td>
             <a href="{{url('uredi_pohod', id=pohod.id)}}"> Uredi</a>
            </td>

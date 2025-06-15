@@ -55,10 +55,10 @@ class Repo:
     
     def dodaj_pot(self, p : pot):
         self.cur.execute("""
-               INSERT into poti(id, ime, zacetna_lokacija, zahtevnost, trajanje_ur, 
+               INSERT into poti(ime, zacetna_lokacija, zahtevnost, trajanje_ur, 
                 visinska_razlika, opis, lokacija)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s) 
-                """, (p.id, p.ime, p.zacetna_lokacija, p.zahtevnost, p.trajanje_ur,
+                VALUES (%s, %s, %s, %s, %s, %s, %s) 
+                """, (p.ime, p.zacetna_lokacija, p.zahtevnost, p.trajanje_ur,
                       p.visinska_razlika, p.opis, p.lokacija))
         self.conn.commit()
 

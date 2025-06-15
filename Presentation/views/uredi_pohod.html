@@ -6,21 +6,18 @@
     <input type="hidden" name="id" value="{{pohod.id}}">
     <div class="form-group">
 
-        <label for="pohod">Ime pohoda</label>      
+        <label for="pot">Pot</label>
+        <input type="text" class="form-control" disabled="true" name="pot" id="pot" value="{{pohod.ime}}">  
         <!-- dokončaj pa še zahtevnost trajanje... -->
      </div>
-     <div class="form-group">
-      <label for="datum">Datum</label>
-      <input type="datetime-local" class="form-control" name="cas" id="cas" value="{{pohod.datum.strftime('%Y-%m-%dT%H:%M')}}">
-  </div>
     <div class="form-group">
-        <label for="exampleInputEmail1">Znesek</label>
-        <input class="form-control" type="number" step="0.001" name="znesek" value="{{pohod.ime_pohoda}}">      
+      <label for="datum_zacetka">Datum začetka</label>
+      <input type="date" class="form-control" name="datum_zacetka" id="datum_zacetka" value="{{pohod.datum_zacetka.strftime('%Y-%m-%d')}}">
     </div>
     <div class="form-group">
-        <label for="exampleInputEmail1">Opis</label>
-        <textarea class="form-control" name="opis">{{pohod.opis}}</textarea>    
-    </div>      
+      <label for="datum_konca">Datum konca</label>
+      <input type="date" class="form-control" name="datum_konca" id="datum_konca" value="{{pohod.datum_konca.strftime('%Y-%m-%d')}}">
+    </div>
     
     <button type="submit" class="btn btn-primary">Posodobi pohod</button>
   </form>

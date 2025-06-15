@@ -32,6 +32,17 @@ class PohodiService:
             )        
         # uporabimo repozitorij za zapis v bazo
         self.repo.dodaj_pohod(t)
+    
+    def posodobi_pohod(self, id : int, datum_zacetka : datetime, datum_konca: datetime, pot: int) -> None:
+       
+        t = pohod(
+            id=id,
+            datum_zacetka=datum_zacetka,
+            datum_konca=datum_konca,
+            pot=pot,
+            )        
+        # uporabimo repozitorij za zapis v bazo
+        self.repo.posodobi_pohod(t)
 
     # def naredi_transakcijo_oseba(self, o : oseba, znesek: float, opis: str) -> None:
        

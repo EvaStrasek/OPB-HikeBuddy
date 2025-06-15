@@ -130,64 +130,62 @@ def dodaj_pohod_post():
 
 
 @post('/uredi_pohod')
-def uredi_pot_post():
+def uredi_pohod_post():
 #     """
 #     Stran za urejanje transakcije.  """ 
-    id = int(request.forms.get('id'))  
-    ime = request.forms.get('ime')
-    zahtevnost = request.forms.get('zahtevnost')
-    zacetna_lokacija = request.forms.get('zacetna_lokacija')
-    trajanje_ur = float(request.forms.get('trajanje_ur'))
-    visinska_razlika_m = float(request.forms.get('visinska_razlika_m'))
-    opis = request.forms.get('opis')
-    lokacija = request.forms.get('lokacija')
+    id = int(request.forms.get('id'))
+    datum_zacetka_str = request.forms.get('datum_zacetka')
+    datum_konca_str = request.forms.get('datum_konca')
+        
+    datum_zacetka = datetime.datetime.strptime(datum_zacetka_str, '%Y-%m-%d').date()
+    datum_konca = datetime.datetime.strptime(datum_konca_str, '%Y-%m-%d').date()
+    pot = request.forms.get('pot')
+
+    # ime = request.forms.get('ime')
+    # zahtevnost = request.forms.get('zahtevnost')
+    # zacetna_lokacija = request.forms.get('zacetna_lokacija')
+    # trajanje_ur = float(request.forms.get('trajanje_ur'))
+    # visinska_razlika_m = float(request.forms.get('visinska_razlika_m'))
+    # opis = request.forms.get('opis')
+    # lokacija = request.forms.get('lokacija')
     
-    potiService.posodobi_pohod(id, ime, zahtevnost, zacetna_lokacija, trajanje_ur, visinska_razlika_m,
-                            opis, lokacija)
+    pohodiService.posodobi_pohod(id, datum_zacetka, datum_konca, pot)
     redirect(url('/'))
 
-# @post('/prijava')
-# def prijava():
-#     """
-#     Prijavi uporabnika v aplikacijo. Če je prijava uspešna, ustvari piškotke o uporabniku in njegovi roli.
-#     Drugače sporoči, da je prijava neuspešna.
-#     """
-#     username = request.forms.get('username')
-#     password = request.forms.get('password')
+@post('/prijava')
+def prijava():
+    """
+    Prijavi uporabnika v aplikacijo. Če je prijava uspešna, ustvari piškotke o uporabniku in njegovi roli.
+    Drugače sporoči, da je prijava neuspešna.
+    """
+    username = request.forms.get('username')
+    password = request.forms.get('password')
+    if not auth.obstaja_uporabnik(username):
+        return template("prijava.html", napaka="Uporabnik s tem imenom ne obstaja")
+    prijava = auth.prijavi_uporabnika(username, password)
+    if prijava:
+        response.set_cookie("uporabnik", username)
+        response.set_cookie("rola", prijava.role)      
+        # redirect v večino primerov izgleda ne deluje
+        redirect(url('/'))
+        # Uporabimo kar template, kot v sami "index" funkciji
+        # transakcije = service.dobi_transakcije()        
+        # return template('transakcije.html', transakcije = transakcije)      
+    else:
+        return template("prijava.html", uporabnik=None, rola=None, napaka="Neuspešna prijava. Napačno geslo ali uporabniško ime.")
 
-#     if not auth.obstaja_uporabnik(username):
-#         return template("prijava.html", napaka="Uporabnik s tem imenom ne obstaja")
-
-#     prijava = auth.prijavi_uporabnika(username, password)
-#     if prijava:
-#         response.set_cookie("uporabnik", username)
-#         response.set_cookie("rola", prijava.role)
-        
-#         # redirect v večino primerov izgleda ne deluje
-#         redirect(url('/'))
-
-#         # Uporabimo kar template, kot v sami "index" funkciji
-
-#         # transakcije = service.dobi_transakcije()        
-#         # return template('transakcije.html', transakcije = transakcije)
-        
-#     else:
-#         return template("prijava.html", uporabnik=None, rola=None, napaka="Neuspešna prijava. Napačno geslo ali uporabniško ime.")
-
-# @get('/odjava')
-# def odjava():
-#     """
-#     Odjavi uporabnika iz aplikacije. Pobriše piškotke o uporabniku in njegovi roli.
-#     """
-    
-#     response.delete_cookie("uporabnik")
-#     response.delete_cookie("rola")
-    
-#     return template('prijava.html', uporabnik=None, rola=None, napaka=None)
-
-
- # Dokler nimate razvitega vmesnika za dodajanje uporabnikov, jih dodajte kar ročno.
-#auth.dodaj_uporabnika('gasper', 'admin', 'gasper')
+@get('/odjava')
+def odjava():
+    """
+    Odjavi uporabnika iz aplikacije. Pobriše piškotke o uporabniku in njegovi roli.
+    """
+  
+    response.delete_cookie("uporabnik")
+    response.delete_cookie("rola")
+  
+    return template('prijava.html', uporabnik=None, rola=None, napaka=None) 
+#Dokler nimate razvitega vmesnika za dodajanje uporabnikov, jih dodajte kar ročno.
+#auth.dodaj_uporabnika('eva', 'admin', 'eva')
 if __name__ == "__main__":
    
     run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=True)

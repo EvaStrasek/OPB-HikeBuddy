@@ -27,9 +27,11 @@ class Repo:
     
     def dobi_pohode_dto(self) -> List[pohodDto]:
         self.cur.execute("""
-               SELECT id, datum_zacetka, datum_konca, pot
-                FROM pohodi2
-                Order by datum_zacetka desc   
+                SELECT p.id, r.ime, p.datum_zacetka, p.datum_konca, r.zacetna_lokacija, r.zahtevnost, 
+                r.trajanje_ur, r.visinska_razlika_m, r.opis, r.lokacija
+                FROM pohodi2 p
+                left join poti r on p.pot = r.id
+                Order by p.datum_zacetka desc 
         """)
 
         pohodi_seznam = [pohodDto.from_dict(t) for t in self.cur.fetchall()]
@@ -37,19 +39,26 @@ class Repo:
     
     def dobi_pohod_dto(self, id) -> pohodDto:
         self.cur.execute("""
-               SELECT id, datum_zacetka, datum_konca, pot
-                FROM pohodi2
-                WHERE id = %s                         
+                 SELECT p.id, r.ime, p.datum_zacetka, p.datum_konca, r.zacetna_lokacija, r.zahtevnost, 
+                r.trajanje_ur, r.visinska_razlika_m, r.opis, r.lokacija
+                FROM pohodi2 p
+                left join poti r on p.pot = r.id
+                WHERE p.id = %s                      
         """, (id,))
+            #   SELECT id, datum_zacetka, datum_konca, pot
+            #   FROM pohodi2
+            #   WHERE id = %s 
+
+
 
         pohod = pohodDto.from_dict(self.cur.fetchone())
         return pohod
     
     def dodaj_pohod(self, p : pohod):
         self.cur.execute("""
-               INSERT into pohodi2(id, datum_zacetka, datum_konca, pot)
-                VALUES (%s, %s, %s, %s) 
-                """, (p.id, p.datum_zacetka, p.datum_konca, p.pot))
+               INSERT into pohodi2(datum_zacetka, datum_konca, pot)
+                VALUES (%s, %s, %s) 
+                """, (p.datum_zacetka, p.datum_konca, p.pot))
         self.conn.commit()
 
     def posodobi_pohod(self, p : pohod):
