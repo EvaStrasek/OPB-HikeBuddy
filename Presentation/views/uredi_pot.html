@@ -1,0 +1,38 @@
+%rebase('osnova.html', naslov='Urejanje poti', stran='uredi_pot')
+
+
+
+  <form action="{{url('/uredi_pot')}}" method="POST", style="width: 60%; margin-left: 5%;">
+    <input type="hidden" name="id" value="{{pot.id}}">
+    <div class="form-group">
+
+        <label for="ime">Ime</label>
+        <input type="text" class="form-control" name="ime" id="ime" value="{{pot.ime}}">  
+     </div>
+        <div class="form-group">
+      <label for="zacetna_lokacija">Začetna lokacija</label>
+      <input type="text" class="form-control" name="zacetna_lokacija" id="zacetna_lokacija" value="{{pot.zacetna_lokacija}}">
+    </div>
+    <div class="form-group">
+      <label for="zahtevnost">Zahtevnost</label>
+      <input type="text" class="form-control" name="zahtevnost" id="zahtevnost" value="{{pot.zahtevnost}}">
+    </div>
+    <div class="form-group">
+      <label for="trajanje_ur">Trajanje</label>
+      <input type="text" class="form-control" name="trajanje_ur" id="trajanje_ur" value="{{pot.trajanje_ur}}">
+    </div>
+    <div class="form-group">
+      <label for="visinska_razlika_m">Višinska razlika (m)</label>
+      <input type="text" class="form-control" name="visinska_razlika_m" id="visinska_razlika_m" value="{{pot.visinska_razlika_m}}">
+    </div>
+    <div class="form-group">
+      <label for="Opis">Opis</label>
+      <input type="text" class="form-control" name="opis" id="opis" value="{{pot.opis}}">
+    </div>
+    <div class="form-group">
+      <label for="lokacija">Lokacija</label>
+      <input type="text" class="form-control" name="lokacija" id="lokacija" value="{{pot.lokacija}}">
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Posodobi pot</button>
+  </form>

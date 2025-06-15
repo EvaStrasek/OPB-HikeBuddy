@@ -1,0 +1,59 @@
+%rebase('osnova.html', naslov='Poti', stran='poti')
+
+<div >
+  <h2>Seznam vseh poti</h2>
+    <a  href="{{url('/dodaj_pot')}}" class="btn btn-light">
+        Dodaj novo pot
+     </a>
+       <br>
+      <br>  
+    <div style="display: flex;">
+
+    <div style="flex:1;">
+      <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Ime poti</th>
+                <th>Zahtevnost</th>  
+                <th>Začetna lokacija</th>  
+                <th>Trajanje (h)</th>
+                <th>Višinska razlika (m)</th>
+                <th>Opis</th>
+                <th>Lokacija</th>   
+             </tr>
+        </thead>
+     
+         <!-- SELECT p.id, p.ime, p.zacetna_lokacija, p.zahtevnost, 
+                p.trajanje_ur, p.visinska_razlika_m, p.opis, p.lokacija
+                FROM poti p  -->
+
+      %for pot in poti:
+        <tr>
+           <td>{{pot.ime}}</td>
+           <td>{{pot.zahtevnost}}</td>
+           <td>{{pot.zacetna_lokacija}}</td>
+           <td>{{pot.trajanje_ur}}</td>
+           <td>{{pot.visinska_razlika_m}}</td>
+           <td>{{pot.opis}}</td>
+           <td>{{pot.lokacija}}</td>
+           <td>
+            <a href="{{url('uredi_pot', id=pot.id)}}"> Uredi</a>
+           </td>
+     
+        </tr>
+      %end
+      </table>
+
+
+
+    </div>    
+
+    </div>
+   
+</div>
+
+
+  
+
+  

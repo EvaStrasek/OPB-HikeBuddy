@@ -20,5 +20,47 @@ class PotiService:
     def dobi_pot(self, id) -> pot:
         return self.repo.dobi_pot(id)
     
-    def dobi_pohod_dto(self, id) -> pohodDto:
-        return self.repo.dobi_pohod_dto(id)
+    def dobi_pot_dto(self, id) -> potDto:
+        return self.repo.dobi_pot_dto(id)
+
+    def naredi_pot(self, ime : str, zacetna_lokacija :str, zahtevnost : str, trajanje_ur : float, visinka_razlika_m : float, opis : str, lokacija : str) -> None:
+
+        t = pot(
+            ime = ime,
+            zacetna_lokacija = zacetna_lokacija,
+            zahtevnost= zahtevnost,
+            trajanje_ur=trajanje_ur,
+            visinska_razlika_m=visinka_razlika_m,
+            opis = opis,
+            lokacija=lokacija
+            )        
+    # uporabimo repozitorij za zapis v bazo
+        self.repo.dodaj_pot(t)
+
+    def dodaj_pot(self,ime : str, zacetna_lokacija :str, zahtevnost : str, trajanje_ur : float, visinka_razlika_m : float, opis : str, lokacija : str) -> None:
+       
+        t = pot(
+            ime = ime,
+            zacetna_lokacija = zacetna_lokacija,
+            zahtevnost= zahtevnost,
+            trajanje_ur=trajanje_ur,
+            visinska_razlika_m=visinka_razlika_m,
+            opis = opis,
+            lokacija=lokacija
+            )        
+        # uporabimo repozitorij za zapis v bazo
+        self.repo.dodaj_pot(t)
+       
+    def posodobi_pot(self, ime : str, zacetna_lokacija :str, zahtevnost : str, trajanje_ur : float, visinka_razlika_m : float, opis : str, lokacija : str) -> None:
+       
+        t = pot(
+            ime = ime,
+            zacetna_lokacija = zacetna_lokacija,
+            zahtevnost= zahtevnost,
+            trajanje_ur=trajanje_ur,
+            visinska_razlika_m=visinka_razlika_m,
+            opis = opis,
+            lokacija=lokacija
+            )       
+        # uporabimo repozitorij za zapis v bazo
+        self.repo.posodobi_pot(t)      

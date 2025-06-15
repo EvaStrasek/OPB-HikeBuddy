@@ -25,6 +25,17 @@
         
         </div>
 
+        <div class="navbar-nav">     
+          
+          %if stran=='poti':
+          <a class="nav-link active" href="{{url('/poti')}}">Poti</a>
+          %else:
+          <a class="nav-link" href="{{url('/poti')}}">Poti</a>
+          %end
+
+        
+        </div>
+
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
 
           <ul class="navbar-nav ml-auto">
@@ -33,7 +44,11 @@
               {{uporabnik}} ({{rola}}) 
             </span>
             %end               
-  
+
+            <li class="nav-link">
+                <a class="dropdown-item" href="{{url('prijava')}}">Prijava</a>
+            </li>
+
             <li class="nav-link">
                 <a class="dropdown-item" href="{{url('odjava')}}">Odjava</a>
             </li>

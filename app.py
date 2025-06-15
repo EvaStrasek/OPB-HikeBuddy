@@ -48,6 +48,18 @@ def index():
 
     return template_user('pohodi.html', pohodi = pohodi)
 
+@get('/poti')
+# @cookie_required
+def poti():
+    """
+    Poti
+    """   
+  
+    poti = potiService.dobi_poti_dto() 
+
+    return template_user('poti.html', poti = poti)
+
+
 # @get('/osebe')
 # @cookie_required
 # def index():
@@ -60,7 +72,7 @@ def index():
 
 
 
-@get('/pohodi_dto')
+@get('/poti_dto')
 def poti_dto(): 
   
     poti_dto = potiService.dobi_poti_dto()  
@@ -79,25 +91,25 @@ def dodaj_pot():
 def dodaj_pot_post():
 # Preberemo podatke iz forme. Lahko bi uporabili kakšno dodatno metodo iz service objekta
 
-    ime = int(request.forms.get('ime'))
-    zahtevnost = float(request.forms.get('zahtevnost'))
-    zacetna_lokacija = float(request.forms.get('zacetna_lokacija'))
+    ime = request.forms.get('ime')
+    zahtevnost = request.forms.get('zahtevnost')
+    zacetna_lokacija = request.forms.get('zacetna_lokacija')
     trajanje_ur = float(request.forms.get('trajanje_ur'))
-    visinska_razlika_m = float(request.forms.get('visinska_razmika_m'))
+    visinska_razlika_m = float(request.forms.get('visinska_razlika_m'))
     opis = request.forms.get('opis')
-    lokacija = float(request.forms.get('lokacija'))   
+    lokacija = request.forms.get('lokacija')
 
     potiService.naredi_pot(ime, zahtevnost, zacetna_lokacija, trajanje_ur, visinska_razlika_m, opis, lokacija)
     
     
-    redirect(url('/'))
+    redirect(url('/poti'))
 
 @get('/uredi_pot/<id:int>')
 def uredi_pot(id):
     """
     Stran za urejanje poti.  """   
     pot = potiService.dobi_poti_dto(id)
-    return template_user('uredi_pohod.html', pot = pot)
+    return template_user('uredi_pot.html', pot = pot)
 
 @get('/uredi_pohod/<id:int>')
 def uredi_pohod(id):
@@ -112,6 +124,13 @@ def dodaj_pohod():
     Stran za dodajanje pohodov.  """
     poti = potiService.dobi_poti_dto()    
     return template_user('dodaj_pohod.html', poti=poti)
+
+@get('/dodaj_pot')
+def dodaj_pohod():
+    """
+    Stran za dodajanje poti.  """
+    poti = potiService.dobi_poti_dto()    
+    return template_user('dodaj_pot.html', poti=poti)
 
 @post('/dodaj_pohod')
 def dodaj_pohod_post():
@@ -128,6 +147,13 @@ def dodaj_pohod_post():
     
     redirect(url('/'))
 
+@post('/dodaj_pot')
+def dodaj_pot_post():
+
+    potiService.dodaj_pot(ime, zacetna_lokacija, zahtevnost, trajanje_ur, visinska_razlika_m, opis, lokacija)
+    
+    redirect(url('/poti'))
+
 
 @post('/uredi_pohod')
 def uredi_pohod_post():
@@ -140,16 +166,16 @@ def uredi_pohod_post():
     datum_zacetka = datetime.datetime.strptime(datum_zacetka_str, '%Y-%m-%d').date()
     datum_konca = datetime.datetime.strptime(datum_konca_str, '%Y-%m-%d').date()
     pot = request.forms.get('pot')
-
-    # ime = request.forms.get('ime')
-    # zahtevnost = request.forms.get('zahtevnost')
-    # zacetna_lokacija = request.forms.get('zacetna_lokacija')
-    # trajanje_ur = float(request.forms.get('trajanje_ur'))
-    # visinska_razlika_m = float(request.forms.get('visinska_razlika_m'))
-    # opis = request.forms.get('opis')
-    # lokacija = request.forms.get('lokacija')
+    ime = request.forms.get('ime')
+    zahtevnost = request.forms.get('zahtevnost')
+    zacetna_lokacija = request.forms.get('zacetna_lokacija')
+    trajanje_ur = float(request.forms.get('trajanje_ur'))
+    visinska_razlika_m = float(request.forms.get('visinska_razlika_m'))
+    opis = request.forms.get('opis')
+    lokacija = request.forms.get('lokacija')
     
-    pohodiService.posodobi_pohod(id, datum_zacetka, datum_konca, pot)
+    pohodiService.posodobi_pohod(id, datum_zacetka, datum_konca, pot, ime, zacetna_lokacija, zahtevnost, 
+                                 trajanje_ur, visinska_razlika_m, opis, lokacija)
     redirect(url('/'))
 
 @post('/prijava')
