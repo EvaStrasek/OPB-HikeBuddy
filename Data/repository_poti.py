@@ -64,6 +64,8 @@ class Repo:
 
     def posodobi_pot(self, p : pot):
         self.cur.execute("""
-            Update poti set zahtevnost = %s, trajanje_ur = %s, opis = %s where id = %s
-        """, (p.zahtevnost, p.trajanje_ur, p.opis, p.id))
+            Update poti set ime = %s, zacetna_lokacija = %s, zahtevnost = %s, 
+                         trajanje_ur = %s, visinska_razlika_m = %s, opis = %s, lokacija = %s where id = %s
+        """, (p.ime, p.zacetna_lokacija, p.zahtevnost, p.trajanje_ur,
+                      p.visinska_razlika_m, p.opis, p.lokacija, p.id))
         self.conn.commit()
