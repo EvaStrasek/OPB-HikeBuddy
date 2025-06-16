@@ -14,6 +14,7 @@ password = auth.password
 
 # Ustvari povezavo
 conn = psycopg2.connect(database=database, host=host, port=port, user=user, password=password)
+conn.set_client_encoding('UTF8')
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
@@ -109,6 +110,8 @@ def zapisi_df(df: pd.DataFrame) -> None:
     psycopg2.extras.execute_values(cur, sql, records)
     
     # Potrdimo spremembe v bazi
+    conn.commit()
+    cur.execute("SELECT setval('pohodi_id_seq', (SELECT MAX(id) FROM pohodi))")
     conn.commit()
 
 

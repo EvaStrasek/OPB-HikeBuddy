@@ -54,7 +54,7 @@ class PotiService:
     def posodobi_pot(self, id: int, ime : str, zacetna_lokacija :str, zahtevnost : str, trajanje_ur : float, visinka_razlika_m : float, opis : str, lokacija : str) -> None:
        
         t = pot(
-            id=id
+            id=id,
             ime = ime,
             zacetna_lokacija = zacetna_lokacija,
             zahtevnost= zahtevnost,

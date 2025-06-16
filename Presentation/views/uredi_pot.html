@@ -2,14 +2,14 @@
 
 
 
-  <form action="{{url('/uredi_pot')}}" method="POST", style="width: 60%; margin-left: 5%;">
+  <form action="{{url('/uredi_pot')}}" method="POST" accept-charset="UTF-8" style="width: 60%; margin-left: 5%;">
     <input type="hidden" name="id" value="{{pot.id}}">
     <div class="form-group">
 
         <label for="ime">Ime</label>
         <input type="text" class="form-control" name="ime" id="ime" value="{{pot.ime}}">  
      </div>
-        <div class="form-group">
+    <div class="form-group">
       <label for="zacetna_lokacija">Začetna lokacija</label>
       <input type="text" class="form-control" name="zacetna_lokacija" id="zacetna_lokacija" value="{{pot.zacetna_lokacija}}">
     </div>

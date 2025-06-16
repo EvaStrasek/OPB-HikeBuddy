@@ -154,6 +154,7 @@ def uredi_pohod_post():
 
 @post('/uredi_pot')
 def uredi_pot_post():
+    id = int(request.forms.get('id'))
     ime = request.forms.get('ime')
     zahtevnost = request.forms.get('zahtevnost')
     zacetna_lokacija = request.forms.get('zacetna_lokacija')
@@ -161,7 +162,7 @@ def uredi_pot_post():
     visinska_razlika_m = float(request.forms.get('visinska_razlika_m'))
     opis = request.forms.get('opis')
     lokacija = request.forms.get('lokacija')
-    potiService.posodobi_pot(ime, zacetna_lokacija, zahtevnost, trajanje_ur, visinska_razlika_m, opis, lokacija)
+    potiService.posodobi_pot(id,ime, zacetna_lokacija, zahtevnost, trajanje_ur, visinska_razlika_m, opis, lokacija)
     
     redirect(url('/poti'))
 

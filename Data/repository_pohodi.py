@@ -13,6 +13,7 @@ DB_PORT = os.environ.get('POSTGRES_PORT', 5432)
 class Repo:
     def __init__(self):
         self.conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password, port=DB_PORT)
+        self.conn.set_client_encoding('UTF8')
         self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     def dobi_pohode(self) -> List[pohod]:
