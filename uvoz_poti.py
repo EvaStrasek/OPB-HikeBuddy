@@ -107,6 +107,7 @@ def zapisi_df(df: pd.DataFrame) -> None:
     conn.commit()
 
    
+    
 if __name__ == "__main__":
     # Preberi CSV datoteko, pri čemer privzamemo, da je datoteka
     # "customers-100.csv" v isti mapi kot tvoj skript ali podaj absolutno pot.
