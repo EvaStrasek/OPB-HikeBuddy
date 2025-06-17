@@ -204,14 +204,22 @@ def odjava():
 
 
 
-@get('/gore_top10')
-def top10_gore():
+@get('/gore')
+def seznam_gora():
     """
-    Prikaz prvih 10 gora
+    Prikaz gora po straneh – 20 na stran
     """
-    gore = goreService.pridobi_vse_gore()
-    top10 = gore[:10]
-    return template_user('gore.html', gore=top10)
+    vse_gore = goreService.pridobi_vse_gore()
+    stran = int(request.query.get('page', '1'))
+    velikost_strani = 20
+    zacetek = (stran - 1) * velikost_strani
+    konec = zacetek + velikost_strani
+    trenutne_gore = vse_gore[zacetek:konec]
+    st_strani = (len(vse_gore) + velikost_strani - 1) // velikost_strani
+
+    return template_user('gore.html', gore=trenutne_gore, stran=stran, st_strani=st_strani)
+
+
 
 
 
