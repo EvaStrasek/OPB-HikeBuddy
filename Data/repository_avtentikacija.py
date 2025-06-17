@@ -27,17 +27,13 @@ class Repo:
     #    self.conn.commit()
         
     def dodaj_uporabnika(self, uporabnik: Uporabnik):
-        """Shrani uporabnika, geslo pa prej ustrezno zhashira."""
-        hashed = bcrypt.hashpw(uporabnik.geslo.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        uporabnik_hashed = Uporabnik(
-            ime=uporabnik.ime,
-            priimek=uporabnik.priimek,
-            uporabnisko_ime=uporabnik.uporabnisko_ime,
-            geslo=hashed,
-            telefon=uporabnik.telefon,
-            email=uporabnik.email
-        )
-        self.dodaj_uporabnika(uporabnik_hashed)
+        """Shrani uporabnika v bazo s hashiranim geslom."""
+        self.cur.execute("""
+            INSERT INTO uporabniki (ime, priimek, uporabnisko_ime, geslo, telefon, email)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (uporabnik.ime, uporabnik.priimek, uporabnik.uporabnisko_ime,
+        uporabnik.geslo, uporabnik.telefon, uporabnik.email))
+        self.conn.commit()
 
     def pridobi_uporabnika_po_uporabniskem_imenu(self, uporabnisko_ime: str) -> Uporabnik:
         self.cur.execute("""

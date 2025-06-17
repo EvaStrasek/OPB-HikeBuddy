@@ -106,13 +106,13 @@ class udelezenciDto:
     telefon: str=field(default="")
     e_mail: str=field(default="")
 
-@dataclass_json
-@dataclass
-class Uporabnik:
-    username: str = field(default="")
-    role: str = field(default="")
-    password_hash: str = field(default="")
-    last_login: str = field(default="")
+# @dataclass_json
+# @dataclass
+# class Uporabnik:
+#     username: str = field(default="")
+#     role: str = field(default="")
+#     password_hash: str = field(default="")
+#     last_login: str = field(default="")
 
 @dataclass
 class UporabnikDto:
@@ -148,16 +148,42 @@ class Gora:
     num_gps_paths: Optional[int]
     description: Optional[str]
     
-@dataclass
-class Uporabnik:
-    ime: str
-    priimek: str
-    uporabnisko_ime: str
-    geslo: str
-    telefon: str
-    email: str
-    id: Optional[int] = field(default=None)
+# @dataclass
+# class Uporabnik:
+#     ime: str
+#     priimek: str
+#     uporabnisko_ime: str
+#     geslo: str
+#     telefon: str
+#     email: str
+#     id: Optional[int] = field(default=None)
     
+    
+class Uporabnik:
+    def __init__(self, id, ime, priimek, uporabnisko_ime, geslo, telefon, email, role="uporabnik"):
+        self.id = id
+        self.ime = ime
+        self.priimek = priimek
+        self.uporabnisko_ime = uporabnisko_ime
+        self.geslo = geslo
+        self.telefon = telefon
+        self.email = email
+        self.role = role
+
+    @staticmethod
+    def from_dict(row):
+        return Uporabnik(
+            id=row.get("id"),
+            ime=row.get("ime"),
+            priimek=row.get("priimek"),
+            uporabnisko_ime=row.get("uporabnisko_ime"),
+            geslo=row.get("geslo"),
+            telefon=row.get("telefon"),
+            email=row.get("email"),
+            role=row.get("role", "uporabnik")
+        )
+        
+        
 @dataclass
 class UporabnikDto:
     uporabnisko_ime: str = field(default="")

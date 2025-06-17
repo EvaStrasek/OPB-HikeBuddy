@@ -204,6 +204,8 @@ def registracija_post():
 
 @post('/prijava')
 def prijava():
+    print("⬅⬅ KLICALI FUNKCIJO PRIJAVA")  # <-- TEST: preverimo, če smo v pravi funkciji
+
     username = request.forms.get('username')
     password = request.forms.get('password')
 
