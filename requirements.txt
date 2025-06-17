@@ -1,4 +1,4 @@
 psycopg2
 dataclasses_json
 bottle
-bcryptapt-get
+bcrypt

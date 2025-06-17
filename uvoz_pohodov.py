@@ -111,8 +111,7 @@ def zapisi_df(df: pd.DataFrame) -> None:
     
     # Potrdimo spremembe v bazi
     conn.commit()
-    cur.execute("SELECT setval('pohodi_id_seq', (SELECT MAX(id) FROM pohodi))")
-    conn.commit()
+
 
 
 if __name__ == "__main__":
