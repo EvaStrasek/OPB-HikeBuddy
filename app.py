@@ -1,12 +1,14 @@
 import datetime
 from functools import wraps
-from Presentation.bottleext import get, post, run, request, template, redirect, static_file, url, response, template_user
+from Presentation.bottleext import route, get, post, run, request, template, redirect, static_file, url, response, template_user
 
 from Services.pohodi_service import PohodiService
 from Services.poti_service import PotiService
 from Services.auth_service import AuthService
 from Services.gore_service import GoraService
 import os
+
+import traceback
 
 # Ustvarimo instance servisov, ki jih potrebujemo. 
 # Če je število servisov veliko, potem je service bolj smiselno inicializirati v metodi in na
@@ -168,27 +170,54 @@ def uredi_pot_post():
     
     redirect(url('/poti'))
 
+@route('/registracija')
+def registracija_get():
+    return template('registracija', napaka=None)
+
+@post('/registracija')
+def registracija_post():
+    ime = request.forms.get('ime')
+    priimek = request.forms.get('priimek')
+    uporabnisko_ime = request.forms.get('username')
+    password = request.forms.get('password')
+    telefon = request.forms.get('telefon')
+    email = request.forms.get('email')
+
+    # preveri, če uporabnik že obstaja
+    if auth.obstaja_uporabnik(uporabnisko_ime):
+        return template('registracija', napaka="Uporabniško ime že obstaja. Izberi drugo.")
+
+    # dodaj uporabnika (ustvari hash in shrani v bazo)
+    try:
+        auth.dodaj_uporabnika(ime, priimek, uporabnisko_ime, password, telefon, email)
+        # po uspešni registraciji preusmeri na prijavo
+        
+    except Exception as e:
+    
+        print("Napaka pri registraciji:", e)
+        traceback.print_exc()
+        return template('registracija', napaka=f"Napaka pri registraciji: {e}")
+    
+    redirect(url('/odjava'))
+
+
+
 @post('/prijava')
 def prijava():
-    """
-    Prijavi uporabnika v aplikacijo. Če je prijava uspešna, ustvari piškotke o uporabniku in njegovi roli.
-    Drugače sporoči, da je prijava neuspešna.
-    """
     username = request.forms.get('username')
     password = request.forms.get('password')
+
     if not auth.obstaja_uporabnik(username):
-        return template("prijava.html", napaka="Uporabnik s tem imenom ne obstaja")
+        return template("prijava.html", napaka="Uporabnik s tem imenom ne obstaja", rola=None, uporabnik=None)
+
     prijava = auth.prijavi_uporabnika(username, password)
     if prijava:
         response.set_cookie("uporabnik", username)
-        response.set_cookie("rola", prijava.role)      
-        # redirect v večino primerov izgleda ne deluje
+        response.set_cookie("rola", getattr(prijava, 'role', 'uporabnik'))  # če nimaš role, privzeto uporabnik
         redirect(url('/'))
-        # Uporabimo kar template, kot v sami "index" funkciji
-        # transakcije = service.dobi_transakcije()        
-        # return template('transakcije.html', transakcije = transakcije)      
     else:
-        return template("prijava.html", uporabnik=None, rola=None, napaka="Neuspešna prijava. Napačno geslo ali uporabniško ime.")
+        return template("prijava.html", napaka="Neuspešna prijava. Napačno geslo ali uporabniško ime.", uporabnik=None, rola=None)
+
 
 @get('/odjava')
 def odjava():

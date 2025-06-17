@@ -1,61 +1,41 @@
-
-from Data.repository_pohodi import Repo
-from Data.models import *
+from Data.repository_avtentikacija import Repo
+from Data.models import Uporabnik, UporabnikDto
 import bcrypt
-from datetime import date
 
 
 class AuthService:
-    repo : Repo
+    repo: Repo
     def __init__(self):
-         self.repo = Repo()
+        self.repo = Repo()
 
-    # def dodaj_uporabnika(self, uporabnik: str, rola: str, geslo: str) -> UporabnikDto:
+    def dodaj_uporabnika(self, ime: str, priimek: str, uporabnisko_ime: str, geslo: str,
+                         telefon: str, email: str) -> UporabnikDto:
+        # Hashiranje gesla
+        geslo_hash = bcrypt.hashpw(geslo.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-    #     # zgradimo hash za geslo od uporabnika
+        uporabnik = Uporabnik(
+            id=None,
+            ime=ime,
+            priimek=priimek,
+            uporabnisko_ime=uporabnisko_ime,
+            geslo=geslo_hash,
+            telefon=telefon,
+            email=email
+        )
 
-    #     # Najprej geslo zakodiramo kot seznam bajtov
-    #     bytes = geslo.encode('utf-8')
-  
-    #     # Nato ustvarimo salt
-    #     salt = bcrypt.gensalt()
-        
-    #     # In na koncu ustvarimo hash gesla
-    #     password_hash = bcrypt.hashpw(bytes, salt)
+        self.repo.dodaj_uporabnika(uporabnik)
+        return UporabnikDto(uporabnisko_ime=uporabnisko_ime, ime=ime, priimek=priimek)
 
-    #     # Sedaj ustvarimo objekt Uporabnik in ga zapišemo bazo
+    def obstaja_uporabnik(self, uporabnisko_ime: str) -> bool:
+        return self.repo.obstaja_uporabnik(uporabnisko_ime)
 
-    #     u = Uporabnik(
-    #         username=uporabnik,
-    #         role=rola,
-    #         password_hash=password_hash.decode(),
-    #         last_login= date.today().isoformat()
-    #     )
+    def prijavi_uporabnika(self, uporabnisko_ime: str, geslo: str) -> UporabnikDto | bool:
+        try:
+            user = self.repo.pridobi_uporabnika_po_uporabniskem_imenu(uporabnisko_ime)
+        except Exception:
+            return False
 
-    #     self.repo.dodaj_uporabnika(u)
-
-    #     return UporabnikDto(username=uporabnik, role=rola)
-
-    # def obstaja_uporabnik(self, uporabnik: str) -> bool:
-    #     try:
-    #         user = self.repo.dobi_uporabnika(uporabnik)
-    #         return True
-    #     except:
-    #         return False
-        
-    # def prijavi_uporabnika(self, uporabnik : str, geslo: str) -> UporabnikDto | bool :
-
-    #     # Najprej dobimo uporabnika iz baze
-    #     user = self.repo.dobi_uporabnika(uporabnik)
-
-    #     geslo_bytes = geslo.encode('utf-8')
-    #     # Ustvarimo hash iz gesla, ki ga je vnesel uporabnik
-    #     succ = bcrypt.checkpw(geslo_bytes, user.password_hash.encode('utf-8'))
-
-    #     if succ:
-    #         # popravimo last login time
-    #         user.last_login = date.today().isoformat()
-    #         self.repo.posodobi_uporabnika(user)
-    #         return UporabnikDto(username=user.username, role=user.role)
-        
-    #     return False
+        if bcrypt.checkpw(geslo.encode('utf-8'), user.geslo.encode('utf-8')):
+            return UporabnikDto(uporabnisko_ime=user.uporabnisko_ime, ime=user.ime, priimek=user.priimek, role=user.role)
+        else:
+            return False

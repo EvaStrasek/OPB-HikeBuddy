@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <title>Registracija</title>
+</head>
+<body>
+    <h1>Registracija novega uporabnika</h1>
+    % if napaka:
+        <p style="color: red;">{{napaka}}</p>
+    % end
+
+    <form method="post" action="/registracija">
+        <label>Ime: <input type="text" name="ime" required></label><br>
+        <label>Priimek: <input type="text" name="priimek" required></label><br>
+        <label>Uporabniško ime: <input type="text" name="username" required></label><br>
+        <label>Geslo: <input type="password" name="password" required></label><br>
+        <label>Telefon: <input type="text" name="telefon"></label><br>
+        <label>Email: <input type="email" name="email" required></label><br>
+        <button type="submit">Registriraj se</button>
+    </form>
+
+    <p>Že imate račun? <a href="/prijava">Prijavite se tukaj</a>.</p>
+</body>
+</html>

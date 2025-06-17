@@ -147,3 +147,20 @@ class Gora:
     num_paths: int
     num_gps_paths: Optional[int]
     description: Optional[str]
+    
+@dataclass
+class Uporabnik:
+    ime: str
+    priimek: str
+    uporabnisko_ime: str
+    geslo: str
+    telefon: str
+    email: str
+    id: Optional[int] = field(default=None)
+    
+@dataclass
+class UporabnikDto:
+    uporabnisko_ime: str = field(default="")
+    ime: str = field(default="")
+    priimek: str = field(default="")
+    role:  str = field(default="user")  # Default role can be 'user', 'admin', etc.
