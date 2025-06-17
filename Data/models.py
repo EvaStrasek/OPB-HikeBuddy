@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
 from datetime import datetime, date
+from typing import Optional
 
 @dataclass_json
 @dataclass
@@ -117,3 +118,32 @@ class Uporabnik:
 class UporabnikDto:
     username: str = field(default="")
     role: str = field(default="")
+
+
+# Newly added by Manca
+
+@dataclass
+class Pot_Gora:
+    id: int
+    mountain_id: int
+    route_name: str
+    route_time: str
+    route_difficulty: str
+    start_point: str
+    height_diff: int
+    gear_summer: Optional[str]
+    gear_winter: Optional[str]
+
+@dataclass
+class Gora:
+    mountain_id: int
+    name: str
+    country: str
+    mountain_range: str
+    height_m: int
+    coordinates: str
+    type: str
+    popularity: str
+    num_paths: int
+    num_gps_paths: Optional[int]
+    description: Optional[str]

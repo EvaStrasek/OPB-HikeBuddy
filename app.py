@@ -5,6 +5,7 @@ from Presentation.bottleext import get, post, run, request, template, redirect, 
 from Services.pohodi_service import PohodiService
 from Services.poti_service import PotiService
 from Services.auth_service import AuthService
+from Services.gore_service import GoraService
 import os
 
 # Ustvarimo instance servisov, ki jih potrebujemo. 
@@ -14,6 +15,7 @@ import os
 pohodiService = PohodiService()
 potiService = PotiService()
 auth = AuthService()
+goreService = GoraService()
 
 # privzete nastavitve
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
@@ -198,8 +200,28 @@ def odjava():
     response.delete_cookie("rola")
   
     return template('prijava.html', uporabnik=None, rola=None, napaka=None) 
+
+
+
+
+@get('/gore_top10')
+def top10_gore():
+    """
+    Prikaz prvih 10 gora
+    """
+    gore = goreService.pridobi_vse_gore()
+    top10 = gore[:10]
+    return template_user('gore.html', gore=top10)
+
+
+
+
+
+
 #Dokler nimate razvitega vmesnika za dodajanje uporabnikov, jih dodajte kar ročno.
 #auth.dodaj_uporabnika('eva', 'admin', 'eva')
 if __name__ == "__main__":
    
     run(host='localhost', port=SERVER_PORT, reloader=RELOADER, debug=True)
+    
+    

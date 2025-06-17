@@ -23,19 +23,14 @@ def ustvari_tabelo_gore(ime_tabele: str) -> None:
             id SERIAL PRIMARY KEY,
             mountain_id INTEGER,
             name TEXT,
-            url TEXT,
-            title TEXT,
             country TEXT,
             mountain_range TEXT,
             height_m INTEGER,
             coordinates TEXT,
             type TEXT,
-            views INTEGER,
             popularity TEXT,
-            num_images INTEGER,
             num_paths INTEGER,
             num_gps_paths INTEGER,
-            registration_book INTEGER,
             description TEXT
         );
     """)
@@ -49,15 +44,14 @@ def preimenuj_stolpce(df: pd.DataFrame) -> pd.DataFrame:
     df = df.rename(columns={
         "id": "mountain_id",
         "Name": "name",
-        "URL": "url",
-        "Title": "title",
         "Country": "country",
         "Mountain Range": "mountain_range",
         "Height(m)": "height_m",
         "Coordinates": "coordinates",
         "Type": "type",
         "Popularity": "popularity",
-        "Number of Paths": "num_paths",
+        "Number of Paths": "num_paths",       
+        "Number of GPS Paths": "num_gps_paths",
         "Description": "description"
     })
     return df
@@ -69,14 +63,14 @@ def transformiraj(df: pd.DataFrame) -> pd.DataFrame:
     # Convert any % popularity to keep as string (you can parse it further if needed)
     
     columns = [
-        "mountain_id", "name", "url", "title", "country", "mountain_range",
+        "mountain_id", "name", "country", "mountain_range",
         "height_m", "coordinates", "type", "popularity",
-        "num_paths", "description"
+        "num_paths", "num_gps_paths", "description"
     ]
     return df[columns]
 
 def zapisi_df(df: pd.DataFrame) -> None:
-    ime_tabele = "gore"
+    ime_tabele = "gore_podrobnosti"
 
     ustvari_tabelo_gore(ime_tabele)
     df = preimenuj_stolpce(df)

@@ -26,7 +26,6 @@ def ustvari_tabelo_poti_triglav(ime_tabele: str) -> None:
             route_time TEXT,
             route_difficulty TEXT,
             start_point TEXT,
-            ferata TEXT,
             height_diff INTEGER,
             gear_summer TEXT,
             gear_winter TEXT
@@ -60,7 +59,7 @@ def transformiraj(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def zapisi_df(df: pd.DataFrame) -> None:
-    ime_tabele = "poti_triglav"
+    ime_tabele = "poti_po_gorah"
 
     ustvari_tabelo_poti_triglav(ime_tabele)
     df = preimenuj_stolpce(df)
