@@ -9,8 +9,11 @@ class AuthService:
         self.repo = Repo()
 
     def dodaj_uporabnika(self, ime: str, priimek: str, uporabnisko_ime: str, geslo: str,
-                         telefon: str, email: str) -> UporabnikDto:
-        # Hashiranje gesla
+                         telefon: str, email: str) -> UporabnikDto | None:
+        if self.repo.obstaja_uporabnik(uporabnisko_ime):
+            print("Uporabnik že obstaja.")
+            return None  # ali dvigneš izjemo
+            # Hashiranje gesla
         geslo_hash = bcrypt.hashpw(geslo.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         uporabnik = Uporabnik(
@@ -36,13 +39,15 @@ class AuthService:
         except Exception:
             
             return False
-        # DEBUG IZPIS
-        print("🔐 Vnešeno geslo:", geslo)
-        print("🗄️  Geslo iz baze:", user.geslo)
-
         if bcrypt.checkpw(geslo.encode('utf-8'), user.geslo.encode('utf-8')):
             
             return UporabnikDto(uporabnisko_ime=user.uporabnisko_ime, ime=user.ime, priimek=user.priimek, role=user.role)
         else:
             
             return False
+        
+    def dobi_id_uporabnika(self, uporabnisko_ime):
+        return self.repo.dobi_id_uporabnika(uporabnisko_ime)
+    
+    # def pridobi_prijave_uporabnika(self, uporabnisko_ime: str):
+    #     return self.repo.pridobi_prijave_uporabnika(uporabnisko_ime)

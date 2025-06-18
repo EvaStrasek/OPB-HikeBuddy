@@ -1,6 +1,16 @@
 %rebase('osnova.html', naslov='Pohodi', stran='pohodi')
 
 <div >
+ % if flash_msg:
+  <div class="alert alert-success" role="alert">
+    {{flash_msg}}
+  </div>
+  % end
+  % if uporabnisko_ime:
+    <p>Prijavljeni ste kot: <strong>{{uporabnisko_ime}}</strong></p>
+  % else:
+    <p><a href="{{url('/prijava')}}">Prijava</a> | <a href="{{url('/registracija')}}">Registracija</a></p>
+  % end
   <h2>Seznam vseh pohodov</h2>
     <a  href="{{url('/dodaj_pohod')}}" class="btn btn-light">
       Dodaj nov pohod
@@ -25,7 +35,8 @@
                 <th>Trajanje (h)</th>
                 <th>Višinska razlika (m)</th>
                 <th>Opis</th>
-                <th>Lokacija</th>   
+                <th>Lokacija</th> 
+                <th>Prijava</th>
              </tr>
         </thead>
      
@@ -49,7 +60,12 @@
            <td>
             <a href="{{url('uredi_pohod', id=pohod.id)}}"> Uredi</a>
            </td>
-     
+           <td>
+              <form action="{{url('prijava_na_pohod')}}" method="post">
+                <input type="hidden" name="pohod_id" value="{{pohod.id}}">
+                <button type="submit" class="btn btn-primary btn-sm">Prijavi se</button>
+              </form>
+            </td>
         </tr>
       %end
       </table>

@@ -67,6 +67,16 @@ class Repo:
             Update pohodi2 set datum_zacetka = %s, datum_konca = %s where id = %s
         """, (p.datum_zacetka, p.datum_konca, p.id))
         self.conn.commit()
+        
+    def prijavi_uporabnika_na_pohod(self, uporabnik_id: int, pohod_id: int):
+        self.cur.execute("""
+        INSERT INTO prijava_na_pohod (uporabnik_id, pohod_id)
+        VALUES (%s, %s)
+        ON CONFLICT DO NOTHING
+        """, (uporabnik_id, pohod_id))
+        self.conn.commit()
+        
+    
 
     # def dobi_opremo(self) -> List[oprema]:
     #     self.cur.execute("""

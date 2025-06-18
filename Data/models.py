@@ -190,3 +190,17 @@ class UporabnikDto:
     ime: str = field(default="")
     priimek: str = field(default="")
     role:  str = field(default="user")  # Default role can be 'user', 'admin', etc.
+    
+class PrijavaNaPohod:
+    def __init__(self, uporabnik_id: int, pohod_id: int, cas_prijave: datetime = None):
+        self.uporabnik_id = uporabnik_id
+        self.pohod_id = pohod_id
+        self.cas_prijave = cas_prijave or datetime.now()
+
+    @staticmethod
+    def from_dict(row):
+        return PrijavaNaPohod(
+            uporabnik_id=row["uporabnik_id"],
+            pohod_id=row["pohod_id"],
+            cas_prijave=row["cas_prijave"]
+        )

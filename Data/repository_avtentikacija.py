@@ -50,3 +50,25 @@ class Repo:
             SELECT 1 FROM uporabniki WHERE uporabnisko_ime = %s
         """, (uporabnisko_ime,))
         return self.cur.fetchone() is not None
+    
+    
+    def dobi_id_uporabnika(self, uporabnisko_ime):
+        self.cur.execute("SELECT id FROM uporabniki WHERE uporabnisko_ime = %s", (uporabnisko_ime,))
+        row = self.cur.fetchone()
+        return row[0] if row else None
+
+
+    # def pridobi_prijave_uporabnika(self, uporabnisko_ime: str):
+    #     self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    #     self.cur.execute("""
+    #         SELECT p.id, p.ime, p.datum_zacetka
+    #         FROM prijava_na_pohod pp
+    #         JOIN uporabniki u ON pp.uporabnik_id = u.id
+    #         JOIN pohodi2 p ON pp.pohod_id = p.id
+    #         WHERE u.uporabnisko_ime = %s
+    #     """, (uporabnisko_ime,))
+    #     prijave = self.cur.fetchall()
+    #     print("Prijave za uporabnika", uporabnisko_ime)
+    #     for prijava in prijave:
+    #         print(prijava)
+    #     return prijave

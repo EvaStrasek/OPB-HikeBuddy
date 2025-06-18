@@ -1,6 +1,6 @@
 import datetime
 from functools import wraps
-from Presentation.bottleext import route, get, post, run, request, template, redirect, static_file, url, response, template_user
+from Presentation.bottleext import route, get, post, run, request, template, redirect, static_file, url, response, template_user, HTTPResponse
 
 from Services.pohodi_service import PohodiService
 from Services.poti_service import PotiService
@@ -47,10 +47,17 @@ def index():
     """
     Domača stran s pohodi.
     """   
-  
+    
+    uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
+    # prijave = auth.pridobi_prijave_uporabnika(uporabnisko_ime)
+    # for prijava in prijave:
+    #     print(prijava)               # izpiše celoten DictRow
+    #     print(prijava.keys())
+    flash_msg = request.get_cookie("flash_msg", secret="skrivnost")
+    response.delete_cookie("flash_msg")
     pohodi = pohodiService.dobi_pohode_dto() 
 
-    return template_user('pohodi.html', pohodi = pohodi)
+    return template_user('pohodi.html', pohodi = pohodi, uporabnisko_ime=uporabnisko_ime, flash_msg=flash_msg)
 
 @get('/poti')
 # @cookie_required
@@ -58,10 +65,10 @@ def poti():
     """
     Poti
     """   
-  
+    uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
     poti = potiService.dobi_poti_dto() 
 
-    return template_user('poti.html', poti = poti)
+    return template_user('poti.html', poti = poti, uporabnisko_ime=uporabnisko_ime)
 
 
 # @get('/osebe')
@@ -204,7 +211,7 @@ def registracija_post():
 
 @post('/prijava')
 def prijava():
-    print("⬅⬅ KLICALI FUNKCIJO PRIJAVA")  # <-- TEST: preverimo, če smo v pravi funkciji
+    
 
     username = request.forms.get('username')
     password = request.forms.get('password')
@@ -214,7 +221,7 @@ def prijava():
 
     prijava = auth.prijavi_uporabnika(username, password)
     if prijava:
-        response.set_cookie("uporabnik", username)
+        response.set_cookie("uporabnisko_ime", username, secret="skrivnost")
         response.set_cookie("rola", getattr(prijava, 'role', 'uporabnik'))  # če nimaš role, privzeto uporabnik
         redirect(url('/'))
     else:
@@ -232,8 +239,111 @@ def odjava():
   
     return template('prijava.html', uporabnik=None, rola=None, napaka=None) 
 
+# @route('/prijavi_na_pohod/<pohod_id:int>', method='POST')
+# def prijava_na_pohod(pohod_id):
+#     # Tukaj predpostavljamo, da imaš nek mehanizem za prijavo uporabnika, 
+#     # ki shrani uporabnikov id v cookie ali session
+#     uporabnik_id = request.get_cookie("uporabnik_id", secret='tvoj_secret_kljuc')
+    
+#     if not uporabnik_id:
+#         response.status = 401
+#         return {"napaka": "Uporabnik ni prijavljen"}
+
+#     try:
+#         pohodiService.prijavi_uporabnika_na_pohod(int(uporabnik_id), pohod_id)
+#         return {"sporocilo": "Uspešno prijavljen na pohod"}
+#     except Exception as e:
+#         response.status = 400
+#         return {"napaka": str(e)}
+    
+    
+# @route('/pohodi')
+# def prikazi_pohode():
+#     flash_msg = request.get_cookie("flash_msg", secret="skrivnost")
+#     if flash_msg:
+#         response.set_cookie("flash_msg", "", expires=0)  # počisti cookie
+
+#     pohodi = pohodiService.dobi_pohode_dto()
+#     return template('pohodi', pohodi=pohodi, flash_msg=flash_msg)
 
 
+@route('/pohodi')
+def prikazi_pohode():
+    pohodi = pohodiService.dobi_pohode_dto()
+
+    # preberi flash sporočilo in ga takoj zbriši
+    flash_msg = request.get_cookie("flash_msg", secret="skrivnost")
+    if flash_msg:
+        response.delete_cookie("flash_msg", path='/')
+    else:
+        flash_msg = None
+    # Pridobi uporabnikove prijave na pohode
+    uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
+    prijave = []
+    if uporabnisko_ime:
+        uporabnik_id = auth.dobi_id_uporabnika(uporabnisko_ime)
+        if uporabnik_id:
+            prijave = pohodiService.dobi_prijave_uporabnika(uporabnik_id)  # vrne seznam prijav
+
+    return template('pohodi', pohodi=pohodi, flash_msg=flash_msg, prijave=prijave, uporabnisko_ime=uporabnisko_ime)
+
+
+@post('/prijava_na_pohod')
+def prijava_na_pohod():
+    pohod_id = request.forms.get('pohod_id')
+
+    # Pridobi uporabniško ime iz piškotka
+    uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
+    print("Uporabnisko ime:", uporabnisko_ime)
+    if not uporabnisko_ime:
+        return template('napaka', sporocilo='Najprej se moraš prijaviti.')
+
+    # Poskusi pridobiti ID uporabnika iz baze na podlagi uporabniškega imena
+    try:
+        uporabnik_id = auth.dobi_id_uporabnika(uporabnisko_ime)
+        print("Uporabnik ID:", uporabnik_id)
+        if uporabnik_id is None:
+            return template('napaka', sporocilo='Uporabnik ne obstaja.')
+
+        # pohodiService.prijavi_uporabnika_na_pohod(int(uporabnik_id), int(pohod_id))
+        
+        # pohodni_podrobnosti = pohodiService.dobi_pohode_dto(int(pohod_id))  # recimo ime poti
+        # ime_poti = pohodni_podrobnosti.ime
+        print(f"Uporabnik {uporabnisko_ime} uspešno prijavljen na pohod {pohod_id}")
+        print("Pred redirect")
+        response.set_cookie("flash_msg", f"Uspešno prijavljeni na pohod.", secret="skrivnost")
+        return redirect('/')
+    except HTTPResponse:
+        # redirect vrže exception, ki ga pustimo mimo
+        raise    
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return template('napaka', sporocilo='Napaka pri prijavi: ' + str(e))
+
+
+# @post('/odjava_na_pohod')
+# def odjava_na_pohod():
+#     prijava_id = request.forms.get('prijava_id')
+
+#     uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
+#     if not uporabnisko_ime:
+#         return template('napaka', sporocilo='Najprej se moraš prijaviti.')
+
+#     uporabnik_id = auth.dobi_id_uporabnika(uporabnisko_ime)
+#     if not uporabnik_id:
+#         return template('napaka', sporocilo='Uporabnik ne obstaja.')
+
+#     try:
+#         pohodiService.odjavi_uporabnika_od_pohoda(prijava_id, uporabnik_id)
+#         response.set_cookie("flash_msg", "Uspešno ste se odjavili od pohoda.", secret="skrivnost", path='/')
+#         return redirect('/pohodi')
+
+#     except Exception as e:
+#         import traceback
+#         traceback.print_exc()
+#         return template('napaka', sporocilo='Napaka pri odjavi: ' + str(e))
+    
 
 @get('/gore')
 def seznam_gora():
@@ -251,8 +361,12 @@ def seznam_gora():
     return template_user('gore.html', gore=trenutne_gore, stran=stran, st_strani=st_strani)
 
 
+# # registracija novega uporabnika
+# auth.dodaj_uporabnika("Test", "Test", "testuser", "testpass", "041234567", "test@example.com")
 
-
+# # prijava z istim uporabnikom
+# rezultat = auth.prijavi_uporabnika("testuser", "testpass")
+# print("Rezultat prijave:", rezultat)
 
 
 
