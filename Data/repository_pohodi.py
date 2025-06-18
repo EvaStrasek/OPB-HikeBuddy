@@ -76,6 +76,7 @@ class Repo:
         """, (uporabnik_id, pohod_id))
         self.conn.commit()
         
+   
     
 
     # def dobi_opremo(self) -> List[oprema]:

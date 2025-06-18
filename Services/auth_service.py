@@ -49,5 +49,7 @@ class AuthService:
     def dobi_id_uporabnika(self, uporabnisko_ime):
         return self.repo.dobi_id_uporabnika(uporabnisko_ime)
     
-    # def pridobi_prijave_uporabnika(self, uporabnisko_ime: str):
-    #     return self.repo.pridobi_prijave_uporabnika(uporabnisko_ime)
+    def pridobi_prijave_uporabnika(self, uporabnisko_ime: str):
+        return self.repo.pridobi_prijave_uporabnika(uporabnisko_ime)
+    
+    

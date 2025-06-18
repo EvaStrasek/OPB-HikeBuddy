@@ -1,0 +1,13 @@
+% rebase('osnova.html', stran='moje_prijave', uporabnik=uporabnisko_ime, rola=rola)
+
+<h2>Moje prijave na pohode</h2>
+
+% if prijave:
+  <ul class="list-group">
+    % for prijava in prijave:
+        <li class="list-group-item">
+            <p>{{prijava['pot_ime']}} ({{prijava['datum_zacetka']}} – {{prijava['datum_konca']}})</p>
+        </li>
+  </ul>
+% end
+

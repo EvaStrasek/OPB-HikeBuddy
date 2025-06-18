@@ -321,6 +321,15 @@ def prijava_na_pohod():
         traceback.print_exc()
         return template('napaka', sporocilo='Napaka pri prijavi: ' + str(e))
 
+@get('/moje_prijave')
+def moje_prijave():
+    uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
+    if not uporabnisko_ime:
+        return template('napaka', sporocilo='Najprej se moraš prijaviti.')
+
+    prijave = auth.pridobi_prijave_uporabnika(uporabnisko_ime)
+
+    return template_user('moje_prijave.html', prijave=prijave, uporabnisko_ime=uporabnisko_ime)
 
 # @post('/odjava_na_pohod')
 # def odjava_na_pohod():

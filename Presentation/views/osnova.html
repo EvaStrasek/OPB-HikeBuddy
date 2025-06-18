@@ -45,7 +45,10 @@
             <span class="navbar-text">
               {{uporabnik}} ({{rola}}) 
             </span>
-            %end               
+            % end 
+            <li class="nav-link">
+                <a class="nav-link" href="{{url('/moje_prijave')}}">Moje prijave</a>
+            </li>             
 
             <li class="nav-link">
                 <a class="dropdown-item" href="{{url('odjava')}}">Prijava</a>

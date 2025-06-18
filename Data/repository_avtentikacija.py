@@ -58,17 +58,24 @@ class Repo:
         return row[0] if row else None
 
 
-    # def pridobi_prijave_uporabnika(self, uporabnisko_ime: str):
-    #     self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    #     self.cur.execute("""
-    #         SELECT p.id, p.ime, p.datum_zacetka
-    #         FROM prijava_na_pohod pp
-    #         JOIN uporabniki u ON pp.uporabnik_id = u.id
-    #         JOIN pohodi2 p ON pp.pohod_id = p.id
-    #         WHERE u.uporabnisko_ime = %s
-    #     """, (uporabnisko_ime,))
-    #     prijave = self.cur.fetchall()
-    #     print("Prijave za uporabnika", uporabnisko_ime)
-    #     for prijava in prijave:
-    #         print(prijava)
-    #     return prijave
+    def pridobi_prijave_uporabnika(self, uporabnisko_ime):
+        self.cur.execute("""
+            SELECT
+                poti.ime AS pot_ime,
+                p.datum_zacetka,
+                p.datum_konca
+            FROM prijava_na_pohod pp
+            JOIN uporabniki u ON pp.uporabnik_id = u.id
+            JOIN pohodi2 p ON pp.pohod_id = p.id
+            JOIN poti ON p.pot = poti.id
+            WHERE u.uporabnisko_ime = %s
+            ORDER BY p.datum_zacetka
+        """, (uporabnisko_ime,))
+
+        prijave = self.cur.fetchall()
+        if prijave:
+            print("Polja v prijavi:", prijave[0].keys())  # za debug
+        return prijave
+
+
+
