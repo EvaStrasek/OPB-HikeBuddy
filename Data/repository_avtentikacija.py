@@ -61,6 +61,9 @@ class Repo:
     def pridobi_prijave_uporabnika(self, uporabnisko_ime):
         self.cur.execute("""
             SELECT
+                p.id AS pohod_id,
+                pp.uporabnik_id,
+                pp.pohod_id,
                 poti.ime AS pot_ime,
                 p.datum_zacetka,
                 p.datum_konca
@@ -77,5 +80,11 @@ class Repo:
             print("Polja v prijavi:", prijave[0].keys())  # za debug
         return prijave
 
+    def izbrisi_prijavo(self, pohod_id, uporabnik_id):
+        self.cur.execute("""
+            DELETE FROM prijava_na_pohod 
+            WHERE pohod_id = %s AND uporabnik_id = %s
+        """, (pohod_id, uporabnik_id))
+        self.conn.commit()
 
 

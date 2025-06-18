@@ -52,4 +52,6 @@ class AuthService:
     def pridobi_prijave_uporabnika(self, uporabnisko_ime: str):
         return self.repo.pridobi_prijave_uporabnika(uporabnisko_ime)
     
-    
+    def odjavi_uporabnika_od_pohoda(self, pohod_id, uporabnik_id):
+    # Dodatna logika, preverjanje lastništva itd. po potrebi
+        self.repo.izbrisi_prijavo(pohod_id, uporabnik_id)

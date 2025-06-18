@@ -305,7 +305,7 @@ def prijava_na_pohod():
         if uporabnik_id is None:
             return template('napaka', sporocilo='Uporabnik ne obstaja.')
 
-        # pohodiService.prijavi_uporabnika_na_pohod(int(uporabnik_id), int(pohod_id))
+        pohodiService.prijavi_uporabnika_na_pohod(int(uporabnik_id), int(pohod_id))
         
         # pohodni_podrobnosti = pohodiService.dobi_pohode_dto(int(pohod_id))  # recimo ime poti
         # ime_poti = pohodni_podrobnosti.ime
@@ -323,35 +323,44 @@ def prijava_na_pohod():
 
 @get('/moje_prijave')
 def moje_prijave():
+    flash_msg = request.get_cookie("flash_msg", secret="skrivnost")
+    
+    # Če obstaja, ga pobriši
+    if flash_msg:
+        response.delete_cookie("flash_msg", path="/")
     uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
     if not uporabnisko_ime:
         return template('napaka', sporocilo='Najprej se moraš prijaviti.')
 
     prijave = auth.pridobi_prijave_uporabnika(uporabnisko_ime)
 
-    return template_user('moje_prijave.html', prijave=prijave, uporabnisko_ime=uporabnisko_ime)
+    return template_user('moje_prijave.html', prijave=prijave, uporabnisko_ime=uporabnisko_ime, flash_msg=flash_msg)
 
-# @post('/odjava_na_pohod')
-# def odjava_na_pohod():
-#     prijava_id = request.forms.get('prijava_id')
 
-#     uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
-#     if not uporabnisko_ime:
-#         return template('napaka', sporocilo='Najprej se moraš prijaviti.')
 
-#     uporabnik_id = auth.dobi_id_uporabnika(uporabnisko_ime)
-#     if not uporabnik_id:
-#         return template('napaka', sporocilo='Uporabnik ne obstaja.')
+@post('/odjava_na_pohod')
+def odjava_na_pohod():
+    pohod_id = request.forms.get('pohod_id')
 
-#     try:
-#         pohodiService.odjavi_uporabnika_od_pohoda(prijava_id, uporabnik_id)
-#         response.set_cookie("flash_msg", "Uspešno ste se odjavili od pohoda.", secret="skrivnost", path='/')
-#         return redirect('/pohodi')
+    uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
+    if not uporabnisko_ime:
+        return template('napaka', sporocilo='Najprej se moraš prijaviti.')
 
-#     except Exception as e:
-#         import traceback
-#         traceback.print_exc()
-#         return template('napaka', sporocilo='Napaka pri odjavi: ' + str(e))
+    uporabnik_id = auth.dobi_id_uporabnika(uporabnisko_ime)
+    if not uporabnik_id:
+        return template('napaka', sporocilo='Uporabnik ne obstaja.')
+
+    try:
+        auth.odjavi_uporabnika_od_pohoda(pohod_id, uporabnik_id)
+        response.set_cookie("flash_msg", "Uspešno ste se odjavili od pohoda.", secret="skrivnost", path='/')
+        return redirect('/moje_prijave')
+    except HTTPResponse:
+        # redirect vrže exception, ki ga pustimo mimo
+        raise
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return template('napaka', sporocilo='Napaka pri odjavi: ' + str(e))
     
 
 @get('/gore')

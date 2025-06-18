@@ -44,8 +44,8 @@ class PohodiService:
         # uporabimo repozitorij za zapis v bazo
         self.repo.posodobi_pohod(t)
     
-    # def prijavi_uporabnika_na_pohod(self, uporabnik_id: int, pohod_id: int):
-    #     self.repo.prijavi_uporabnika_na_pohod(uporabnik_id, pohod_id)
+    def prijavi_uporabnika_na_pohod(self, uporabnik_id: int, pohod_id: int):
+        self.repo.prijavi_uporabnika_na_pohod(uporabnik_id, pohod_id)
 
 
     # def naredi_transakcijo_oseba(self, o : oseba, znesek: float, opis: str) -> None:
