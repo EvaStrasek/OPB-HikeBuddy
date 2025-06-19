@@ -19,20 +19,20 @@ class Repo:
 
     def dobi_poti(self) -> List[Pot_Gora]:
             self.cur.execute("""
-                SELECT * FROM poti_gora ORDER BY id
+                SELECT * FROM poti_po_gorah ORDER BY id
             """)
             return [Pot_Gora(**p) for p in self.cur.fetchall()]
 
     def dobi_pot(self, id: int) -> Optional[Pot_Gora]:
             self.cur.execute("""
-                SELECT * FROM poti_gora WHERE id = %s
+                SELECT * FROM poti_po_gorah WHERE id = %s
             """, (id,))
             row = self.cur.fetchone()
             return Pot_Gora(**row) if row else None
 
     def dodaj_pot(self, p: Pot_Gora):
             self.cur.execute("""
-                INSERT INTO poti_gora (id, mountain_id, route_name, route_time, route_difficulty,
+                INSERT INTO poti_po_gorah (id, mountain_id, route_name, route_time, route_difficulty,
                     start_point, height_diff, gear_summer, gear_winter)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (
@@ -43,7 +43,7 @@ class Repo:
 
     def posodobi_pot(self, p: Pot_Gora):
             self.cur.execute("""
-                UPDATE poti_gora SET
+                UPDATE poti_po_gorah SET
                     mountain_id = %s, route_name = %s, route_time = %s, route_difficulty = %s,
                     start_point = %s, height_diff = %s, gear_summer = %s, gear_winter = %s
                 WHERE id = %s
@@ -55,6 +55,6 @@ class Repo:
 
     def izbrisi_pot(self, id: int):
             self.cur.execute("""
-                DELETE FROM poti_gora WHERE id = %s
+                DELETE FROM poti_po_gorah WHERE id = %s
             """, (id,))
             self.conn.commit()
