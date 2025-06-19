@@ -1,4 +1,6 @@
 import datetime
+from unicodedata import normalize
+from urllib.parse import unquote
 from functools import wraps
 from Presentation.bottleext import route, get, post, run, request, template, redirect, static_file, url, response, template_user, HTTPResponse
 
@@ -76,17 +78,17 @@ def nove_poti():
     """
     Stran z novimi potmi
     """   
-    izbrana_gora = request.query.get('gora')  
-
+    izbrana_gora = request.query.getunicode('gora')  
     vse_nove_poti = nove_potiService.dobi_poti()
     seznam_gor = goreService.pridobi_vse_gore() 
-    uporabnisko_ime=request.get_cookie("uporabnisko_ime", secret="skrivnost") 
+    uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
 
     # če uporabnik izbere goro po imenu, poišči ustrezen id
     if not izbrana_gora and seznam_gor:
         izbrana_gora = seznam_gor[0].name
     if izbrana_gora:
-        gor_ids = [g.mountain_id for g in seznam_gor if g.name == izbrana_gora]
+        gor_ids = [g.mountain_id for g in seznam_gor
+                    if g.name == izbrana_gora]
         if gor_ids:
             vse_nove_poti = [p for p in vse_nove_poti if p.mountain_id == gor_ids[0]]
 
