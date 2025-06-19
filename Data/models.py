@@ -22,7 +22,7 @@ class pohodDto:
     ime : str=field(default="")
     zacetna_lokacija: str=field(default="")
     zahtevnost: str=field(default="")
-    trajanje_ur: float=field(default=0)
+    trajanje_ur: str=field(default="")
     visinska_razlika_m: float=field(default=0)
     opis: str=field(default="")
     lokacija: str=field(default="")

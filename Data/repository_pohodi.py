@@ -28,11 +28,20 @@ class Repo:
     
     def dobi_pohode_dto(self) -> List[pohodDto]:
         self.cur.execute("""
-                SELECT p.id, r.ime, p.datum_zacetka, p.datum_konca, r.zacetna_lokacija, r.zahtevnost, 
-                r.trajanje_ur, r.visinska_razlika_m, r.opis, r.lokacija
+                SELECT 
+                    p.id, 
+                    r.route_name as ime, 
+                    p.datum_zacetka, 
+                    p.datum_konca, 
+                    r.start_point as zacetna_lokacija, 
+                    r.route_difficulty as zahtevnost, 
+                    r.route_time as trajanje_ur, 
+                    r.height_diff as visinska_razlika_m, 
+                    r.gear_summer as opis, 
+                    r.gear_winter as lokacija 
                 FROM pohodi2 p
-                left join poti r on p.pot = r.id
-                Order by p.datum_zacetka desc 
+                LEFT JOIN poti_po_gorah r ON p.pot = r.id
+                ORDER BY p.datum_zacetka DESC;
         """)
 
         pohodi_seznam = [pohodDto.from_dict(t) for t in self.cur.fetchall()]
@@ -40,11 +49,20 @@ class Repo:
     
     def dobi_pohod_dto(self, id) -> pohodDto:
         self.cur.execute("""
-                 SELECT p.id, r.ime, p.datum_zacetka, p.datum_konca, r.zacetna_lokacija, r.zahtevnost, 
-                r.trajanje_ur, r.visinska_razlika_m, r.opis, r.lokacija
+                SELECT 
+                    p.id, 
+                    r.route_name, 
+                    p.datum_zacetka, 
+                    p.datum_konca, 
+                    r.start_point, 
+                    r.route_difficulty, 
+                    r.route_time, 
+                    r.height_diff, 
+                    r.gear_summer, 
+                    r.gear_winter
                 FROM pohodi2 p
-                left join poti r on p.pot = r.id
-                WHERE p.id = %s                      
+                LEFT JOIN poti_po_gorah r ON p.pot = r.id
+                WHERE p.id = %s;                    
         """, (id,))
             #   SELECT id, datum_zacetka, datum_konca, pot
             #   FROM pohodi2

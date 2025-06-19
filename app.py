@@ -131,7 +131,7 @@ def uredi_pohod(id):
 def dodaj_pohod():
     """
     Stran za dodajanje pohodov.  """
-    poti = nove_potiService.dobi_poti_dto()    
+    poti = nove_potiService.dobi_poti_dto()   
     return template_user('dodaj_pohod.html', poti=poti)
 
 @get('/dodaj_pot')
@@ -139,7 +139,7 @@ def dodaj_pot():
     """
     Stran za dodajanje poti.  """
     
-    poti = nove_potiService.dobi_poti_dto()    
+    poti = nove_potiService.dobi_poti_dto()  
     return template_user('dodaj_pot.html', poti=poti)
 
 @post('/dodaj_pohod')
@@ -152,6 +152,7 @@ def dodaj_pohod_post():
     # datum_zacetka = datetime.strptime(request.forms.get('datum_zacetka'))
     # datum_konca = datetime.strptime(request.forms.get('datum_konca'))
     pot = int(request.forms.get('pot'))
+    print(pot)
 
     pohodiService.dodaj_pohod(datum_zacetka, datum_konca, pot)
     
