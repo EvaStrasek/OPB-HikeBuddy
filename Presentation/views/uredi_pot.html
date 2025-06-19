@@ -1,7 +1,7 @@
 %rebase('osnova.html', naslov='Urejanje poti', stran='uredi_pot')
 
 
-
+<div style="width: 60%; margin-left: 5%;">
   <form action="{{url('/uredi_pot')}}" method="POST" accept-charset="UTF-8" style="width: 60%; margin-left: 5%;">
     <input type="hidden" name="id" value="{{pot.id}}">
     <div class="form-group">
@@ -36,3 +36,8 @@
     
     <button type="submit" class="btn btn-primary">Posodobi pot</button>
   </form>
+  <form action="{{url('/odstrani_pot')}}" method="POST" onsubmit="return confirm('Ali si prepričan, da želiš odstraniti to pot?');">
+    <input type="hidden" name="id" value="{{pot.id}}">
+    <button type="submit" class="btn btn-danger mt-3">Odstrani pot</button>
+  </form>
+</div>

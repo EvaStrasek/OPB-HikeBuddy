@@ -76,7 +76,11 @@ class Repo:
         """, (uporabnik_id, pohod_id))
         self.conn.commit()
         
-   
+    def odstrani_pohod(self, id: int):
+        self.cur.execute("DELETE FROM prijava_na_pohod WHERE pohod_id = %s", (id,))
+ 
+        self.cur.execute("DELETE FROM pohodi2 WHERE id = %s", (id,))
+        self.conn.commit()
     
 
     # def dobi_opremo(self) -> List[oprema]:

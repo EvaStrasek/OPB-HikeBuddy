@@ -65,3 +65,6 @@ class PotiService:
             )       
         # uporabimo repozitorij za zapis v bazo
         self.repo.posodobi_pot(t)      
+
+    def odstrani_pot(self, id: int):
+        self.repo.odstrani_pot(id)

@@ -72,3 +72,7 @@ class Repo:
         """, (p.ime, p.zacetna_lokacija, p.zahtevnost, p.trajanje_ur,
                       p.visinska_razlika_m, p.opis, p.lokacija, p.id))
         self.conn.commit()
+        
+    def odstrani_pot(self, id: int):
+        self.cur.execute("DELETE FROM poti WHERE id = %s", (id,))
+        self.conn.commit()
