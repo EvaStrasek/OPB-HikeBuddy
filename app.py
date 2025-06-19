@@ -86,7 +86,7 @@ def nove_poti():
     if not izbrana_gora and seznam_gor:
         izbrana_gora = seznam_gor[0].name
     if izbrana_gora:
-        gor_ids = [g.id for g in seznam_gor if g.ime == izbrana_gora]
+        gor_ids = [g.mountain_id for g in seznam_gor if g.name == izbrana_gora]
         if gor_ids:
             vse_nove_poti = [p for p in vse_nove_poti if p.mountain_id == gor_ids[0]]
 
@@ -96,6 +96,7 @@ def nove_poti():
     konec = zacetek + velikost_strani
     trenutne_poti = vse_nove_poti[zacetek:konec]
     st_strani = (len(vse_nove_poti) + velikost_strani - 1) // velikost_strani
+
 
     return template_user('nove_poti.html', nove_poti=trenutne_poti, stran=stran, st_strani=st_strani, 
                          uporabnisko_ime=uporabnisko_ime, seznam_gor=seznam_gor,izbrana_gora=izbrana_gora)
