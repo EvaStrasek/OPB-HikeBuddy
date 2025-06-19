@@ -34,11 +34,7 @@ def ustvari_tabelo_poti_triglav(ime_tabele: str) -> None:
     conn.commit()
 
 def preberi_csv(ime_datoteke: str) -> pd.DataFrame:
-    df = pd.read_csv(ime_datoteke,dtype=str,keep_default_na=False,usecols=[
-    "mountain_id", "route_name", "route_time", "route_difficulty",
-    "start_point", "height_diff", "gear_summer", "gear_winter"])
-    if 'ferata' in df.columns:
-        df = df.drop(columns=['ferata'])
+    df = pd.read_csv(ime_datoteke)
     return df
 
 def preimenuj_stolpce(df: pd.DataFrame) -> pd.DataFrame:
@@ -55,26 +51,20 @@ def preimenuj_stolpce(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def transformiraj(df: pd.DataFrame) -> pd.DataFrame:
-    print("Stolpci pred transformaciji:", df.columns.tolist())
-    print("Prvih nekaj vrstic:\n", df.head())
     columns = [
         "mountain_id", "route_name", "route_time", "route_difficulty",
         "start_point", "height_diff", "gear_summer", "gear_winter"
     ]
     df = df[columns]  # Ensure correct column order
-    print("Stolpci po transformaciji:", df.columns.tolist())
     return df
 
 def zapisi_df(df: pd.DataFrame) -> None:
     ime_tabele = "poti_po_gorah"
 
     ustvari_tabelo_poti_triglav(ime_tabele)
-    if 'ferata' in df.columns:
-        df = df.drop(columns=['ferata'])
 
     df = preimenuj_stolpce(df)
     df = transformiraj(df)
-    print("Stolpci za vnos v bazo:", df.columns.tolist())
     print(df.head())
 
     records = df.values.tolist()

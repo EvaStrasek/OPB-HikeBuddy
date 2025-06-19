@@ -1,4 +1,4 @@
-mountain_id,route_name,route_time,route_difficulty,ferata,start_point,height_diff,gear_summer,gear_winter
+mountain_id,route_name,route_time,route_difficulty,start_point,ferata,height_diff,gear_summer,gear_winter
 1,Aljažev dom v Vratih - Triglav (Tominškova pot),6 h,zelo zahtevna označena pot,Aljažev dom v Vratih (1015 m),B,1849,"čelada, komplet za samovarovanje","čelada, komplet za samovarovanje, cepin, dereze"
 1,Konec ceste na Pokljuki - Triglav (čez Planiko in Mali Triglav),6 h,zelo zahtevna označena pot,Konec ceste na Pokljuki (1340 m),,1524,"čelada, komplet za samovarovanje","čelada, komplet za samovarovanje, cepin, dereze"
 1,Dolina Krma - Triglav (čez Kredarico),6 h 10 min,zelo zahtevna označena pot,Dolina Krma (930 m),,1934,"čelada, komplet za samovarovanje","čelada, komplet za samovarovanje, cepin, dereze"
