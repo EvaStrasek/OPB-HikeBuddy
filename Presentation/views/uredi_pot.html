@@ -1,41 +1,52 @@
-%rebase('osnova.html', naslov='Urejanje poti', stran='uredi_pot')
-
+% rebase('osnova.html', naslov='Urejanje poti', stran='uredi_pot')
 
 <div style="width: 60%; margin-left: 5%;">
   <form action="{{url('/uredi_pot')}}" method="POST" accept-charset="UTF-8" style="width: 60%; margin-left: 5%;">
     <input type="hidden" name="id" value="{{pot.id}}">
-    <div class="form-group">
 
-        <label for="ime">Ime</label>
-        <input type="text" class="form-control" name="ime" id="ime" value="{{pot.ime}}">  
-     </div>
     <div class="form-group">
-      <label for="zacetna_lokacija">Začetna lokacija</label>
-      <input type="text" class="form-control" name="zacetna_lokacija" id="zacetna_lokacija" value="{{pot.zacetna_lokacija}}">
+      <label for="mountain_id">ID gore</label>
+      <input type="number" class="form-control" name="mountain_id" id="mountain_id" value="{{pot.mountain_id}}">
     </div>
+
     <div class="form-group">
-      <label for="zahtevnost">Zahtevnost</label>
-      <input type="text" class="form-control" name="zahtevnost" id="zahtevnost" value="{{pot.zahtevnost}}">
+      <label for="route_name">Ime poti</label>
+      <input type="text" class="form-control" name="route_name" id="route_name" value="{{pot.route_name}}">
     </div>
+
     <div class="form-group">
-      <label for="trajanje_ur">Trajanje</label>
-      <input type="text" class="form-control" name="trajanje_ur" id="trajanje_ur" value="{{pot.trajanje_ur}}">
+      <label for="start_point">Začetna lokacija</label>
+      <input type="text" class="form-control" name="start_point" id="start_point" value="{{pot.start_point}}">
     </div>
+
     <div class="form-group">
-      <label for="visinska_razlika_m">Višinska razlika (m)</label>
-      <input type="text" class="form-control" name="visinska_razlika_m" id="visinska_razlika_m" value="{{pot.visinska_razlika_m}}">
+      <label for="route_difficulty">Zahtevnost</label>
+      <input type="text" class="form-control" name="route_difficulty" id="route_difficulty" value="{{pot.route_difficulty}}">
     </div>
+
     <div class="form-group">
-      <label for="Opis">Opis</label>
-      <input type="text" class="form-control" name="opis" id="opis" value="{{pot.opis}}">
+      <label for="route_time">Trajanje</label>
+      <input type="text" class="form-control" name="route_time" id="route_time" value="{{pot.route_time}}">
     </div>
+
     <div class="form-group">
-      <label for="lokacija">Lokacija</label>
-      <input type="text" class="form-control" name="lokacija" id="lokacija" value="{{pot.lokacija}}">
+      <label for="height_diff">Višinska razlika (m)</label>
+      <input type="text" class="form-control" name="height_diff" id="height_diff" value="{{pot.height_diff}}">
     </div>
-    
+
+    <div class="form-group">
+      <label for="gear_summer">Oprema poleti</label>
+      <input type="text" class="form-control" name="gear_summer" id="gear_summer" value="{{pot.gear_summer}}">
+    </div>
+
+    <div class="form-group">
+      <label for="gear_winter">Oprema pozimi</label>
+      <input type="text" class="form-control" name="gear_winter" id="gear_winter" value="{{pot.gear_winter}}">
+    </div>
+
     <button type="submit" class="btn btn-primary">Posodobi pot</button>
   </form>
+
   <form action="{{url('/odstrani_pot')}}" method="POST" onsubmit="return confirm('Ali si prepričan, da želiš odstraniti to pot?');">
     <input type="hidden" name="id" value="{{pot.id}}">
     <button type="submit" class="btn btn-danger mt-3">Odstrani pot</button>

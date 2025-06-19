@@ -63,6 +63,7 @@ def transformiraj(df: pd.DataFrame) -> pd.DataFrame:
     ]
     df = df[columns]  # Ensure correct column order
     print("Stolpci po transformaciji:", df.columns.tolist())
+    print("Prvih nekaj vrstic po transformaciji:\n", df.head())
     return df
 
 def zapisi_df(df: pd.DataFrame) -> None:

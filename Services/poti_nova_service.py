@@ -1,55 +1,90 @@
 from Data.repository_poti_nove import Repo
-from Data.models import Gora, Pot_Gora
-from typing import List, Optional
+from Data.models import *
+from typing import List
 
 class GoraPotService:
-    repo: Repo
-    def __init__(self):
+    def __init__(self) -> None:
         self.repo = Repo()
 
-    # ------------------- GORA -------------------
-
-    def dobi_gore(self) -> List[Gora]:
-        return self.repo.dobi_gore()
-
-    def dobi_goro(self, id: int) -> Optional[Gora]:
-        return self.repo.dobi_goro(id)
-
-    def dodaj_goro(self, mountain_id: int, name: str, country: str, mountain_range: str,
-                   height_m: int, coordinates: str, type: str, popularity: str, num_paths: int,
-                   num_gps_paths: Optional[int], description: Optional[str]) -> None:
-        g = Gora(mountain_id, name, country, mountain_range, height_m, coordinates, type,
-                 popularity, num_paths, num_gps_paths, description)
-        self.repo.dodaj_goro(g)
-
-    def posodobi_goro(self, mountain_id: int, name: str, country: str, mountain_range: str,
-                      height_m: int, coordinates: str, type: str, popularity: str, num_paths: int,
-                      num_gps_paths: Optional[int], description: Optional[str]) -> None:
-        g = Gora(mountain_id, name, country, mountain_range, height_m, coordinates, type,
-                 popularity, num_paths, num_gps_paths, description)
-        self.repo.posodobi_goro(g)
-
-    # ------------------- POT_GORA -------------------
-
-    def dobi_poti(self) -> List[Pot_Gora]:
+    def dobi_poti(self) -> List[pot]:
         return self.repo.dobi_poti()
-
-    def dobi_pot(self, id: int) -> Optional[Pot_Gora]:
+    
+    def dobi_poti_dto(self) -> List[potDto]:
+        return self.repo.dobi_poti_dto()
+    
+    def dobi_pot(self, id: int) -> pot:
         return self.repo.dobi_pot(id)
+    
+    def dobi_pot_dto(self, id: int) -> potDto:
+        return self.repo.dobi_pot_dto(id)
 
-    def dodaj_pot(self, id: int, mountain_id: int, route_name: str, route_time: str,
-                  route_difficulty: str, start_point: str, height_diff: int,
-                  gear_summer: Optional[str], gear_winter: Optional[str]) -> None:
-        p = Pot_Gora(id, mountain_id, route_name, route_time, route_difficulty,
-                     start_point, height_diff, gear_summer, gear_winter)
-        self.repo.dodaj_pot(p)
+    def naredi_pot(self,
+                   mountain_id: int,
+                   route_name: str,
+                   route_time: float,
+                   route_difficulty: str,
+                   start_point: str,
+                   height_diff: float,
+                   gear_summer: str,
+                   gear_winter: str) -> None:
 
-    def posodobi_pot(self, id: int, mountain_id: int, route_name: str, route_time: str,
-                     route_difficulty: str, start_point: str, height_diff: int,
-                     gear_summer: Optional[str], gear_winter: Optional[str]) -> None:
-        p = Pot_Gora(id, mountain_id, route_name, route_time, route_difficulty,
-                     start_point, height_diff, gear_summer, gear_winter)
-        self.repo.posodobi_pot(p)
+        nova_pot = pot(
+            mountain_id=mountain_id,
+            route_name=route_name,
+            route_time=route_time,
+            route_difficulty=route_difficulty,
+            start_point=start_point,
+            height_diff=height_diff,
+            gear_summer=gear_summer,
+            gear_winter=gear_winter
+        )
+        self.repo.dodaj_pot(nova_pot)
 
-    def izbrisi_pot(self, id: int) -> None:
-        self.repo.izbrisi_pot(id)
+    def dodaj_pot(self,
+                  mountain_id: int,
+                  route_name: str,
+                  route_time: float,
+                  route_difficulty: str,
+                  start_point: str,
+                  height_diff: float,
+                  gear_summer: str,
+                  gear_winter: str) -> None:
+
+        nova_pot = pot(
+            mountain_id=mountain_id,
+            route_name=route_name,
+            route_time=route_time,
+            route_difficulty=route_difficulty,
+            start_point=start_point,
+            height_diff=height_diff,
+            gear_summer=gear_summer,
+            gear_winter=gear_winter
+        )
+        self.repo.dodaj_pot(nova_pot)
+
+    def posodobi_pot(self,
+                     id: int,
+                     mountain_id: int,
+                     route_name: str,
+                     route_time: float,
+                     route_difficulty: str,
+                     start_point: str,
+                     height_diff: float,
+                     gear_summer: str,
+                     gear_winter: str) -> None:
+
+        posodobljena_pot = pot(
+            id=id,
+            mountain_id=mountain_id,
+            route_name=route_name,
+            route_time=route_time,
+            route_difficulty=route_difficulty,
+            start_point=start_point,
+            height_diff=height_diff,
+            gear_summer=gear_summer,
+            gear_winter=gear_winter
+        )
+        self.repo.posodobi_pot(posodobljena_pot)
+
+    def odstrani_pot(self, id: int):
+        self.repo.odstrani_pot(id)

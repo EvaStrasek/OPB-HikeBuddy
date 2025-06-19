@@ -46,30 +46,30 @@ class pohodDto:
 @dataclass_json
 @dataclass
 class pot:
-    id : int = field(default=0)  
-    ime : str=field(default="")
-    #datum: date=field(default=date.today) 
-    zacetna_lokacija: str=field(default="")
-    zahtevnost: str=field(default="")
-    trajanje_ur: float=field(default=0)
-    visinska_razlika_m: float=field(default=0)
-    opis: str=field(default="")
-    lokacija: str=field(default="")
+    id: int = field(default=0)
+    mountain_id: int = field(default=0)
+    route_name: str = field(default="")
+    route_time: str = field(default="")  # Lahko spremeniš v float ali int, če imaš ure v številki
+    route_difficulty: str = field(default="")
+    start_point: str = field(default="")
+    height_diff: float = field(default=0)
+    gear_summer: Optional[str] = field(default="")
+    gear_winter: Optional[str] = field(default="")
+
 
 @dataclass_json
 @dataclass
 class potDto:
-    id: int = field(default=0)  
-    ime: str=field(default="")
-    # datum: date=field(default=date.today)  
-    zacetna_lokacija: str=field(default="")
-    zahtevnost: str=field(default="")
-    trajanje_ur: float=field(default=0)
-    visinska_razlika_m: float=field(default=0)
-    opis: str=field(default="")
-    lokacija: str=field(default="")
-    oprema: str=field(default="")
-
+    id: int = field(default=0)
+    mountain_id: int = field(default=0)
+    route_name: str = field(default="")
+    route_time: str = field(default="")
+    route_difficulty: str = field(default="")
+    start_point: str = field(default="")
+    height_diff: float = field(default=0)
+    gear_summer: Optional[str] = field(default="")
+    gear_winter: Optional[str] = field(default="")
+    
 @dataclass_json
 @dataclass
 class oprema:
@@ -122,17 +122,17 @@ class UporabnikDto:
 
 # Newly added by Manca
 
-@dataclass
-class Pot_Gora:
-    id: int
-    mountain_id: int
-    route_name: str
-    route_time: str
-    route_difficulty: str
-    start_point: str
-    height_diff: int
-    gear_summer: Optional[str]
-    gear_winter: Optional[str]
+# @dataclass
+# class Pot_Gora:
+#     id: int
+#     mountain_id: int
+#     route_name: str
+#     route_time: str
+#     route_difficulty: str
+#     start_point: str
+#     height_diff: int
+#     gear_summer: Optional[str]
+#     gear_winter: Optional[str]
 
 @dataclass
 class Gora:

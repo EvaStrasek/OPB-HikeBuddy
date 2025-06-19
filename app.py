@@ -67,9 +67,9 @@ def poti():
     Poti
     """   
     uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
-    poti = potiService.dobi_poti_dto() 
+    poti = nove_potiService.dobi_poti_dto() 
 
-    return template_user('poti.html', poti = poti, uporabnisko_ime=uporabnisko_ime)
+    return template_user('nove_poti.html', poti = poti, uporabnisko_ime=uporabnisko_ime)
 
 
 @get('/nove_poti')
@@ -109,7 +109,7 @@ def nove_poti():
 @get('/poti_dto')
 def poti_dto(): 
   
-    poti_dto = potiService.dobi_poti_dto()  
+    poti_dto = nove_potiService.dobi_poti_dto()  
         
     return template_user('pohodiDto.html', poti = poti_dto)
 
@@ -117,7 +117,7 @@ def poti_dto():
 def uredi_pot(id):
     """
     Stran za urejanje poti.  """   
-    pot = potiService.dobi_pot_dto(id)
+    pot = nove_potiService.dobi_pot_dto(id)
     return template_user('uredi_pot.html', pot = pot)
 
 @get('/uredi_pohod/<id:int>')
@@ -131,7 +131,7 @@ def uredi_pohod(id):
 def dodaj_pohod():
     """
     Stran za dodajanje pohodov.  """
-    poti = potiService.dobi_poti_dto()    
+    poti = nove_potiService.dobi_poti_dto()    
     return template_user('dodaj_pohod.html', poti=poti)
 
 @get('/dodaj_pot')
@@ -139,7 +139,7 @@ def dodaj_pot():
     """
     Stran za dodajanje poti.  """
     
-    poti = potiService.dobi_poti_dto()    
+    poti = nove_potiService.dobi_poti_dto()    
     return template_user('dodaj_pot.html', poti=poti)
 
 @post('/dodaj_pohod')
@@ -159,25 +159,35 @@ def dodaj_pohod_post():
 
 @post('/dodaj_pot')
 def dodaj_pot_post():
-    
     # Force UTF-8 decoding
     raw_body = request.body.read()
     decoded_body = raw_body.decode('utf-8')
-    
+
     from urllib.parse import parse_qs
     form_data = parse_qs(decoded_body)
 
-    ime = form_data.get('ime', [''])[0]
-    zahtevnost = form_data.get('zahtevnost', [''])[0]
-    zacetna_lokacija = form_data.get('zacetna_lokacija', [''])[0]
-    trajanje_ur = float(form_data.get('trajanje_ur', [0])[0])
-    visinska_razlika_m = float(form_data.get('visinska_razlika_m', [0])[0])
-    opis = form_data.get('opis', [''])[0]
-    lokacija = form_data.get('lokacija', [''])[0]
-    
-    potiService.dodaj_pot(ime, zacetna_lokacija, zahtevnost, trajanje_ur, visinska_razlika_m, opis, lokacija)
-    
-    redirect(url('/poti'))
+    mountain_id = int(form_data.get('mountain_id', [0])[0])
+    route_name = form_data.get('route_name', [''])[0]
+    route_difficulty = form_data.get('route_difficulty', [''])[0]
+    start_point = form_data.get('start_point', [''])[0]
+    route_time = float(form_data.get('route_time', [0])[0])
+    height_diff = float(form_data.get('height_diff', [0])[0])
+    gear_summer = form_data.get('gear_summer', [''])[0]
+    gear_winter = form_data.get('gear_winter', [''])[0]
+
+    nove_potiService.dodaj_pot(
+        mountain_id=mountain_id,
+        route_name=route_name,
+        route_time=route_time,
+        route_difficulty=route_difficulty,
+        start_point=start_point,
+        height_diff=height_diff,
+        gear_summer=gear_summer,
+        gear_winter=gear_winter
+    )
+
+    redirect(url('/nove_poti'))
+
 
 
 @post('/uredi_pohod')
@@ -213,27 +223,37 @@ def uredi_pot_post():
     form_data = parse_qs(decoded_body)
 
     id = int(form_data.get('id', [''])[0])
-    ime = form_data.get('ime', [''])[0]
-    zahtevnost = form_data.get('zahtevnost', [''])[0]
-    zacetna_lokacija = form_data.get('zacetna_lokacija', [''])[0]
-    trajanje_ur = float(form_data.get('trajanje_ur', [0])[0])
-    visinska_razlika_m = float(form_data.get('visinska_razlika_m', [0])[0])
-    opis = form_data.get('opis', [''])[0]
-    lokacija = form_data.get('lokacija', [''])[0]
+    mountain_id = int(form_data.get('mountain_id', [''])[0])
+    route_name = form_data.get('route_name', [''])[0]
+    route_difficulty = form_data.get('route_difficulty', [''])[0]
+    start_point = form_data.get('start_point', [''])[0]
+    route_time = form_data.get('route_time', [0])[0]
+    height_diff = float(form_data.get('height_diff', [0])[0])
+    gear_summer = form_data.get('gear_summer', [''])[0]
+    gear_winter = form_data.get('gear_winter', [''])[0]
 
-    print("IME:", ime)
-    print("LOKACIJA:", lokacija)
+    print("IME POTI:", route_name)
+    print("GORA ID:", mountain_id)
 
-    potiService.posodobi_pot(id, ime, zacetna_lokacija, zahtevnost, trajanje_ur,
-                             visinska_razlika_m, opis, lokacija)
-    
-    redirect(url('/poti'))
+    nove_potiService.posodobi_pot(
+        id=id,
+        mountain_id=mountain_id,
+        route_name=route_name,
+        route_difficulty=route_difficulty,
+        start_point=start_point,
+        route_time=route_time,
+        height_diff=height_diff,
+        gear_summer=gear_summer,
+        gear_winter=gear_winter
+    )
+
+    redirect(url('/nove_poti'))
 
 @post('/odstrani_pot')
 def odstrani_pot():
     id = int(request.forms.get('id'))
-    potiService.odstrani_pot(id)
-    redirect(url('/poti'))
+    nove_potiService.odstrani_pot(id)
+    redirect(url('/nove_poti'))
 
 @route('/registracija')
 def registracija_get():
