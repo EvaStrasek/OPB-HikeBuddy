@@ -312,9 +312,9 @@ def prikazi_pohode():
     uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
     prijave = []
     if uporabnisko_ime:
-        uporabnik_id = auth.dobi_id_uporabnika(uporabnisko_ime)
-        if uporabnik_id:
-            prijave = auth.pridobi_prijave_uporabnika(uporabnik_id)  # vrne seznam prijav
+    #    uporabnik_id = auth.dobi_id_uporabnika(uporabnisko_ime)
+    #    if uporabnik_id:
+        prijave = auth.pridobi_prijave_uporabnika(uporabnisko_ime)  # vrne seznam prijav
 
     return template('pohodi', pohodi=pohodi, flash_msg=flash_msg, prijave=prijave, rola=None, uporabnisko_ime=uporabnisko_ime)
 
