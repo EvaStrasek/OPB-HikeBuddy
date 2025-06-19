@@ -6,6 +6,7 @@ from Services.pohodi_service import PohodiService
 from Services.poti_service import PotiService
 from Services.auth_service import AuthService
 from Services.gore_service import GoraService
+from Services.poti_nova_service import GoraPotService
 import os
 
 import traceback
@@ -18,6 +19,7 @@ pohodiService = PohodiService()
 potiService = PotiService()
 auth = AuthService()
 goreService = GoraService()
+nove_potiService = GoraPotService()
 
 # privzete nastavitve
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
@@ -68,14 +70,35 @@ def poti():
     return template_user('poti.html', poti = poti, uporabnisko_ime=uporabnisko_ime)
 
 
-# @get('/osebe')
+@get('/nove_poti')
 # @cookie_required
-# def index():
-#     """
-#     Domača stran z osebami.    """   
-  
-#     osebe = service.dobi_osebe_dto()
-#     return template_user('osebe.html', osebe = osebe)
+def nove_poti():
+    """
+    Stran z novimi potmi
+    """   
+    izbrana_gora = request.query.get('gora')  
+
+    vse_nove_poti = nove_potiService.dobi_poti()
+    seznam_gor = goreService.pridobi_vse_gore() 
+    uporabnisko_ime=request.get_cookie("uporabnisko_ime", secret="skrivnost") 
+
+    # če uporabnik izbere goro po imenu, poišči ustrezen id
+    if not izbrana_gora and seznam_gor:
+        izbrana_gora = seznam_gor[0].name
+    if izbrana_gora:
+        gor_ids = [g.id for g in seznam_gor if g.ime == izbrana_gora]
+        if gor_ids:
+            vse_nove_poti = [p for p in vse_nove_poti if p.mountain_id == gor_ids[0]]
+
+    stran = int(request.query.get('page', '1'))
+    velikost_strani = 20
+    zacetek = (stran - 1) * velikost_strani
+    konec = zacetek + velikost_strani
+    trenutne_poti = vse_nove_poti[zacetek:konec]
+    st_strani = (len(vse_nove_poti) + velikost_strani - 1) // velikost_strani
+
+    return template_user('nove_poti.html', nove_poti=trenutne_poti, stran=stran, st_strani=st_strani, 
+                         uporabnisko_ime=uporabnisko_ime, seznam_gor=seznam_gor,izbrana_gora=izbrana_gora)
 
 
 

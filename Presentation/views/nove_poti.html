@@ -1,0 +1,73 @@
+%rebase('osnova.html', naslov='Nove poti', stran='nove_poti')
+
+<div>
+  <h2>Seznam vseh poti</h2>
+  <a href="{{url('/dodaj_pot')}}" class="btn btn-light">
+    Dodaj novo pot
+  </a>
+
+  <br><br>
+
+  <!-- Obrazec za izbiro gore -->
+  <form method="get" action="/nove_poti">
+    <label for="gora">Izberi goro:</label>
+    <select name="gora" id="gora" onchange="this.form.submit()">
+        %for gora in seznam_gor:
+        %selected = 'selected' if gora.name == izbrana_gora else ''
+        <option value="{{gora.name}}" {{selected}}>{{gora.name}}</option>
+        %end
+    </select>
+  </form>
+
+  <br>
+
+  <!-- Tabela pohodnih poti -->
+  <div style="display: flex;">
+    <div style="flex: 1;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Gora (ID)</th>
+            <th>Ime poti</th>
+            <th>Zahtevnost</th>
+            <th>Začetna lokacija</th>
+            <th>Trajanje (h)</th>
+            <th>Višinska razlika (m)</th>
+            <th>Poletna oprema</th>
+            <th>Zimska oprema</th>
+          </tr>
+        </thead>
+        <tbody>
+          %for pot in nove_poti:
+            <tr>
+              <td>{{pot.mountain_id}}</td>
+              <td>{{pot.route_name}}</td>
+              <td>{{pot.route_difficulty}}</td>
+              <td>{{pot.start_point}}</td>
+              <td>{{pot.route_time}}</td>
+              <td>{{pot.height_diff}}</td>
+              <td>{{pot.gear_summer}}</td>
+              <td>{{pot.gear_winter}}</td>
+              <td>
+                <a href="{{url('uredi_pot', id=pot.id)}}">Uredi</a>
+              </td>
+            </tr>
+          %end
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Paginacija -->
+  <div class="text-center">
+    <nav>
+      <ul class="pagination justify-content-center">
+        %for i in range(1, st_strani + 1):
+          <li class="page-item {{'active' if i == stran else ''}}">
+            <a class="page-link" href="?gora={{izbrana_gora}}&page={{i}}">{{i}}</a>
+          </li>
+        %end
+      </ul>
+    </nav>
+  </div>
+</div>
