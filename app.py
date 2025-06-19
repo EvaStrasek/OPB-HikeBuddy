@@ -40,6 +40,16 @@ def cookie_required(f):
         
     return decorated
 
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        rola = request.get_cookie("rola", secret="skrivnost")
+        if rola == "admin":
+            return f(*args, **kwargs)
+        return template("napaka", sporocilo="Dostop dovoljen samo administratorjem.")
+    return decorated
+ 
+
 @get('/static/<filename:path>')
 def static(filename):
     return static_file(filename, root='Presentation/static')
@@ -114,6 +124,7 @@ def poti_dto():
     return template_user('pohodiDto.html', poti = poti_dto)
 
 @get('/uredi_pot/<id:int>')
+@admin_required
 def uredi_pot(id):
     """
     Stran za urejanje poti.  """   
@@ -121,6 +132,7 @@ def uredi_pot(id):
     return template_user('uredi_pot.html', pot = pot)
 
 @get('/uredi_pohod/<id:int>')
+@admin_required
 def uredi_pohod(id):
     """
     Stran za urejanje pohoda.  """   
@@ -128,6 +140,7 @@ def uredi_pohod(id):
     return template_user('uredi_pohod.html', pohod = pohod)
 
 @get('/dodaj_pohod')
+@admin_required
 def dodaj_pohod():
     """
     Stran za dodajanje pohodov.  """
@@ -135,6 +148,7 @@ def dodaj_pohod():
     return template_user('dodaj_pohod.html', poti=poti)
 
 @get('/dodaj_pot')
+@admin_required
 def dodaj_pot():
     """
     Stran za dodajanje poti.  """
@@ -143,6 +157,7 @@ def dodaj_pot():
     return template_user('dodaj_pot.html', poti=poti)
 
 @post('/dodaj_pohod')
+@admin_required
 def dodaj_pohod_post():
     datum_zacetka_str = request.forms.get('datum_zacetka')
     datum_konca_str = request.forms.get('datum_konca')
@@ -159,6 +174,7 @@ def dodaj_pohod_post():
     redirect(url('/'))
 
 @post('/dodaj_pot')
+@admin_required
 def dodaj_pot_post():
     # Force UTF-8 decoding
     raw_body = request.body.read()
@@ -192,6 +208,7 @@ def dodaj_pot_post():
 
 
 @post('/uredi_pohod')
+@admin_required
 def uredi_pohod_post():
 #     """
 #     Stran za urejanje transakcije.  """ 
@@ -207,12 +224,14 @@ def uredi_pohod_post():
     redirect(url('/'))
 
 @post('/odstrani_pohod')
+@admin_required
 def odstrani_pohod():
     id = int(request.forms.get('id'))
     pohodiService.odstrani_pohod(id)
     redirect(url('/pohodi'))
 
 @post('/uredi_pot')
+@admin_required
 def uredi_pot_post():
     from urllib.parse import parse_qs
 
@@ -251,6 +270,7 @@ def uredi_pot_post():
     redirect(url('/nove_poti'))
 
 @post('/odstrani_pot')
+@admin_required
 def odstrani_pot():
     id = int(request.forms.get('id'))
     nove_potiService.odstrani_pot(id)
@@ -435,6 +455,7 @@ def seznam_gora():
     return template_user('gore.html', gore=trenutne_gore, stran=stran, st_strani=st_strani)
 
 @get('/vse_prijave')
+@admin_required
 def vse_prijave():
     prijave = auth.pridobi_vse_prijave()
     uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
