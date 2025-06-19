@@ -71,7 +71,7 @@ class Repo:
             JOIN uporabniki u ON pp.uporabnik_id = u.id
             JOIN pohodi2 p ON pp.pohod_id = p.id
             JOIN poti ON p.pot = poti.id
-            WHERE u.id = %s
+            WHERE u.uporabnisko_ime = %s
             ORDER BY p.datum_zacetka
         """, (uporabnisko_ime,))
 
