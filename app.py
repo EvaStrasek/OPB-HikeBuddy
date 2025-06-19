@@ -285,7 +285,9 @@ def registracija_post():
     
     redirect(url('/odjava'))
 
-
+@get('/prijava')
+def prijava_get():
+    return template("prijava.html", napaka=None, uporabnik=None, rola=None)
 
 @post('/prijava')
 def prijava():
