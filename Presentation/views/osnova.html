@@ -33,6 +33,26 @@
           %else:
           <a class="nav-link" href="{{url('/poti')}}">Poti</a>
           %end
+        
+        <div class="navbar-nav">     
+          
+          %if stran=='gore':
+          <a class="nav-link active" href="{{url('/gore')}}">Gore</a>
+          %else:
+          <a class="nav-link" href="{{url('/gore')}}">Gore</a>
+          %end
+
+        
+        </div>
+        
+        </div>
+                <div class="navbar-nav">     
+          
+          %if stran=='nove_poti':
+          <a class="nav-link active" href="{{url('/nove_poti')}}">Poti'</a>
+          %else:
+          <a class="nav-link" href="{{url('/nove_poti')}}">Poti'</a>
+          %end
 
         
         </div>
