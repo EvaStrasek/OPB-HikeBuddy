@@ -47,6 +47,8 @@ class PohodiService:
     def prijavi_uporabnika_na_pohod(self, uporabnik_id: int, pohod_id: int):
         self.repo.prijavi_uporabnika_na_pohod(uporabnik_id, pohod_id)
 
+    def odstrani_pohod(self, id: int):
+        self.repo.odstrani_pohod(id)
 
     # def naredi_transakcijo_oseba(self, o : oseba, znesek: float, opis: str) -> None:
        

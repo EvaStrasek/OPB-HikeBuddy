@@ -192,6 +192,12 @@ def uredi_pohod_post():
     pohodiService.posodobi_pohod(id, datum_zacetka, datum_konca, pot)
     redirect(url('/'))
 
+@post('/odstrani_pohod')
+def odstrani_pohod():
+    id = int(request.forms.get('id'))
+    pohodiService.odstrani_pohod(id)
+    redirect(url('/pohodi'))
+
 @post('/uredi_pot')
 def uredi_pot_post():
     from urllib.parse import parse_qs
@@ -220,6 +226,11 @@ def uredi_pot_post():
     
     redirect(url('/poti'))
 
+@post('/odstrani_pot')
+def odstrani_pot():
+    id = int(request.forms.get('id'))
+    potiService.odstrani_pot(id)
+    redirect(url('/poti'))
 
 @route('/registracija')
 def registracija_get():
@@ -304,7 +315,7 @@ def prikazi_pohode():
         if uporabnik_id:
             prijave = auth.pridobi_prijave_uporabnika(uporabnik_id)  # vrne seznam prijav
 
-    return template('pohodi', pohodi=pohodi, flash_msg=flash_msg, prijave=prijave, uporabnisko_ime=uporabnisko_ime)
+    return template('pohodi', pohodi=pohodi, flash_msg=flash_msg, prijave=prijave, rola=None, uporabnisko_ime=uporabnisko_ime)
 
 
 @post('/prijava_na_pohod')

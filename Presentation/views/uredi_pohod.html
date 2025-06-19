@@ -1,7 +1,7 @@
 %rebase('osnova.html', naslov='Urejanje pohoda', stran='uredi_pohod')
 
 
-
+<div style="width: 60%; margin-left: 5%;">
   <form action="{{url('/uredi_pohod')}}" method="POST" style="width: 60%; margin-left: 5%;">
     <input type="hidden" name="id" value="{{pohod.id}}">
     <div class="form-group">
@@ -21,3 +21,8 @@
     
     <button type="submit" class="btn btn-primary">Posodobi pohod</button>
   </form>
+   <form action="{{url('/odstrani_pohod')}}" method="POST" onsubmit="return confirm('Ali si prepričan, da želiš odstraniti ta pohod?');">
+    <input type="hidden" name="id" value="{{pohod.id}}">
+    <button type="submit" class="btn btn-danger mt-3">Odstrani pohod</button>
+  </form>
+</div>  
