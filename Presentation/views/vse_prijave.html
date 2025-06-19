@@ -1,0 +1,34 @@
+%rebase('osnova.html', naslov="Vse prijave na pohode", stran='vse_prijave')
+
+<h2>Seznam vseh prijav</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ime</th>
+            <th>Priimek</th>
+            <th>Uporab. ime</th>
+            <th>Telefon</th>
+            <th>E-mail</th>
+            <th>Pohod</th>
+            <th>Začetek</th>
+            <th>Konec</th>
+            <th>Čas prijave</th>
+        </tr>
+    </thead>
+    <tbody>
+        %for p in prijave:
+            <tr>
+                <td>{{p['ime']}}</td>
+                <td>{{p['priimek']}}</td> 
+                <td>{{p['uporabnisko_ime']}}</td>
+                <td>{{p['telefon']}}</td>
+                <td>{{p['email']}}</td>
+                <td>{{p['route_name']}}</td>
+                <td>{{p['datum_zacetka']}}</td>
+                <td>{{p['datum_konca']}}</td>
+                <td>{{p['cas_prijave']}}</td>
+            </tr>
+        %end
+    </tbody>
+</table>

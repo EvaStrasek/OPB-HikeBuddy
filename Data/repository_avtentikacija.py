@@ -86,5 +86,20 @@ class Repo:
             WHERE pohod_id = %s AND uporabnik_id = %s
         """, (pohod_id, uporabnik_id))
         self.conn.commit()
+    
+    def pridobi_vse_prijave(self):
+        self.cur.execute("""
+            SELECT pr.uporabnik_id, pr.pohod_id, pr.cas_prijave,
+                u.ime, u.priimek, u.uporabnisko_ime,
+                u.telefon, u.email,
+                po.datum_zacetka, po.datum_konca,
+                pot.route_name
+            FROM prijava_na_pohod pr
+            JOIN uporabniki u ON pr.uporabnik_id = u.id
+            JOIN pohodi2 po ON pr.pohod_id = po.id
+            JOIN poti_po_gorah pot ON po.pot = pot.id
+            ORDER BY pr.cas_prijave DESC
+        """)
+        return self.cur.fetchall()
 
 

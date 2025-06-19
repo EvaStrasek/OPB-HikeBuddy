@@ -11,7 +11,11 @@
   % else:
     <p><a href="{{url('/odjava')}}">Prijava</a> | <a href="{{url('/registracija')}}">Registracija</a></p>
   % end
-  <h2>Seznam vseh pohodov</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Seznam vseh pohodov</h2>
+    <a href="{{url('/vse_prijave')}}" class="btn btn-light">Vse prijave</a>
+  </div>
+
     <a  href="{{url('/dodaj_pohod')}}" class="btn btn-light">
       Dodaj nov pohod
     </a>

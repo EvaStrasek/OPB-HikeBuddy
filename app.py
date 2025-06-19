@@ -434,6 +434,13 @@ def seznam_gora():
 
     return template_user('gore.html', gore=trenutne_gore, stran=stran, st_strani=st_strani)
 
+@get('/vse_prijave')
+def vse_prijave():
+    prijave = auth.pridobi_vse_prijave()
+    uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
+    return template_user("vse_prijave.html", prijave=prijave, uporabnisko_ime=uporabnisko_ime)
+
+
 
 # # registracija novega uporabnika
 # auth.dodaj_uporabnika("Test", "Test", "testuser", "testpass", "041234567", "test@example.com")
