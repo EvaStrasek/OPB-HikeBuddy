@@ -35,9 +35,9 @@ def ustvari_tabelo_poti(ime_tabele : str) -> None:
     conn.commit()
 
 def preberi_csv(ime_datoteke : str) -> pd.DataFrame:
-    df = pd.read_csv(ime_datoteke, sep=",", index_col=0)
-
+    df = pd.read_csv(ime_datoteke, sep=",", index_col=0, encoding="utf-8")  # ali cp1250
     return df
+
 
 def preimenuj_stolpce_poti(df: pd.DataFrame) -> pd.DataFrame:
     """
