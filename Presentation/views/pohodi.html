@@ -9,7 +9,7 @@
   % if uporabnisko_ime:
     <p>Prijavljeni ste kot: <strong>{{uporabnisko_ime}}</strong></p>
   % else:
-    <p><a href="{{url('/prijava')}}">Prijava</a> | <a href="{{url('/registracija')}}">Registracija</a></p>
+    <p><a href="{{url('/odjava')}}">Prijava</a> | <a href="{{url('/registracija')}}">Registracija</a></p>
   % end
   <h2>Seznam vseh pohodov</h2>
     <a  href="{{url('/dodaj_pohod')}}" class="btn btn-light">

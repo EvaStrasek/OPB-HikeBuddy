@@ -49,10 +49,7 @@ def index():
     """   
     
     uporabnisko_ime = request.get_cookie("uporabnisko_ime", secret="skrivnost")
-    # prijave = auth.pridobi_prijave_uporabnika(uporabnisko_ime)
-    # for prijava in prijave:
-    #     print(prijava)               # izpiše celoten DictRow
-    #     print(prijava.keys())
+ 
     flash_msg = request.get_cookie("flash_msg", secret="skrivnost")
     response.delete_cookie("flash_msg")
     pohodi = pohodiService.dobi_pohode_dto() 
@@ -115,6 +112,7 @@ def dodaj_pohod():
 def dodaj_pot():
     """
     Stran za dodajanje poti.  """
+    
     poti = potiService.dobi_poti_dto()    
     return template_user('dodaj_pot.html', poti=poti)
 
@@ -135,14 +133,22 @@ def dodaj_pohod_post():
 
 @post('/dodaj_pot')
 def dodaj_pot_post():
+    
+    # Force UTF-8 decoding
+    raw_body = request.body.read()
+    decoded_body = raw_body.decode('utf-8')
+    
+    from urllib.parse import parse_qs
+    form_data = parse_qs(decoded_body)
 
-    ime = request.forms.get('ime')
-    zahtevnost = request.forms.get('zahtevnost')
-    zacetna_lokacija = request.forms.get('zacetna_lokacija')
-    trajanje_ur = float(request.forms.get('trajanje_ur'))
-    visinska_razlika_m = float(request.forms.get('visinska_razlika_m'))
-    opis = request.forms.get('opis')
-    lokacija = request.forms.get('lokacija')
+    ime = form_data.get('ime', [''])[0]
+    zahtevnost = form_data.get('zahtevnost', [''])[0]
+    zacetna_lokacija = form_data.get('zacetna_lokacija', [''])[0]
+    trajanje_ur = float(form_data.get('trajanje_ur', [0])[0])
+    visinska_razlika_m = float(form_data.get('visinska_razlika_m', [0])[0])
+    opis = form_data.get('opis', [''])[0]
+    lokacija = form_data.get('lokacija', [''])[0]
+    
     potiService.dodaj_pot(ime, zacetna_lokacija, zahtevnost, trajanje_ur, visinska_razlika_m, opis, lokacija)
     
     redirect(url('/poti'))
@@ -165,17 +171,32 @@ def uredi_pohod_post():
 
 @post('/uredi_pot')
 def uredi_pot_post():
-    id = int(request.forms.get('id'))
-    ime = request.forms.get('ime')
-    zahtevnost = request.forms.get('zahtevnost')
-    zacetna_lokacija = request.forms.get('zacetna_lokacija')
-    trajanje_ur = float(request.forms.get('trajanje_ur'))
-    visinska_razlika_m = float(request.forms.get('visinska_razlika_m'))
-    opis = request.forms.get('opis')
-    lokacija = request.forms.get('lokacija')
-    potiService.posodobi_pot(id,ime, zacetna_lokacija, zahtevnost, trajanje_ur, visinska_razlika_m, opis, lokacija)
+    from urllib.parse import parse_qs
+
+    # Preberi telo zahteve kot UTF-8
+    raw_body = request.body.read()
+    decoded_body = raw_body.decode('utf-8')
+
+    # Parsiraj parametre iz obrazca
+    form_data = parse_qs(decoded_body)
+
+    id = int(form_data.get('id', [''])[0])
+    ime = form_data.get('ime', [''])[0]
+    zahtevnost = form_data.get('zahtevnost', [''])[0]
+    zacetna_lokacija = form_data.get('zacetna_lokacija', [''])[0]
+    trajanje_ur = float(form_data.get('trajanje_ur', [0])[0])
+    visinska_razlika_m = float(form_data.get('visinska_razlika_m', [0])[0])
+    opis = form_data.get('opis', [''])[0]
+    lokacija = form_data.get('lokacija', [''])[0]
+
+    print("IME:", ime)
+    print("LOKACIJA:", lokacija)
+
+    potiService.posodobi_pot(id, ime, zacetna_lokacija, zahtevnost, trajanje_ur,
+                             visinska_razlika_m, opis, lokacija)
     
     redirect(url('/poti'))
+
 
 @route('/registracija')
 def registracija_get():
@@ -221,8 +242,8 @@ def prijava():
 
     prijava = auth.prijavi_uporabnika(username, password)
     if prijava:
-        response.set_cookie("uporabnisko_ime", username, secret="skrivnost")
-        response.set_cookie("rola", getattr(prijava, 'role', 'uporabnik'))  # če nimaš role, privzeto uporabnik
+        response.set_cookie("uporabnisko_ime", username, secret="skrivnost", path='/')
+        response.set_cookie("rola", getattr(prijava, 'role', 'uporabnik'), path='/')  # če nimaš role, privzeto uporabnik
         redirect(url('/'))
     else:
         return template("prijava.html", napaka="Neuspešna prijava. Napačno geslo ali uporabniško ime.", uporabnik=None, rola=None)
@@ -234,37 +255,12 @@ def odjava():
     Odjavi uporabnika iz aplikacije. Pobriše piškotke o uporabniku in njegovi roli.
     """
   
-    response.delete_cookie("uporabnik")
-    response.delete_cookie("rola")
-  
+    response.delete_cookie("uporabnisko_ime", path='/')
+    response.delete_cookie("rola", path='/')
+    
+    #redirect('/odjava')
     return template('prijava.html', uporabnik=None, rola=None, napaka=None) 
 
-# @route('/prijavi_na_pohod/<pohod_id:int>', method='POST')
-# def prijava_na_pohod(pohod_id):
-#     # Tukaj predpostavljamo, da imaš nek mehanizem za prijavo uporabnika, 
-#     # ki shrani uporabnikov id v cookie ali session
-#     uporabnik_id = request.get_cookie("uporabnik_id", secret='tvoj_secret_kljuc')
-    
-#     if not uporabnik_id:
-#         response.status = 401
-#         return {"napaka": "Uporabnik ni prijavljen"}
-
-#     try:
-#         pohodiService.prijavi_uporabnika_na_pohod(int(uporabnik_id), pohod_id)
-#         return {"sporocilo": "Uspešno prijavljen na pohod"}
-#     except Exception as e:
-#         response.status = 400
-#         return {"napaka": str(e)}
-    
-    
-# @route('/pohodi')
-# def prikazi_pohode():
-#     flash_msg = request.get_cookie("flash_msg", secret="skrivnost")
-#     if flash_msg:
-#         response.set_cookie("flash_msg", "", expires=0)  # počisti cookie
-
-#     pohodi = pohodiService.dobi_pohode_dto()
-#     return template('pohodi', pohodi=pohodi, flash_msg=flash_msg)
 
 
 @route('/pohodi')
@@ -283,7 +279,7 @@ def prikazi_pohode():
     if uporabnisko_ime:
         uporabnik_id = auth.dobi_id_uporabnika(uporabnisko_ime)
         if uporabnik_id:
-            prijave = pohodiService.dobi_prijave_uporabnika(uporabnik_id)  # vrne seznam prijav
+            prijave = auth.pridobi_prijave_uporabnika(uporabnik_id)  # vrne seznam prijav
 
     return template('pohodi', pohodi=pohodi, flash_msg=flash_msg, prijave=prijave, uporabnisko_ime=uporabnisko_ime)
 

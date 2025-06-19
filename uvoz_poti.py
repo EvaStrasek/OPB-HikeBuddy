@@ -61,8 +61,7 @@ def transformiraj_poti(df: pd.DataFrame) -> pd.DataFrame:
 
     # Definiramo vrstni red stolpcev, kot so definirani v tabeli
     columns = [
-        "id", "ime",
-        "zacetna_lokacija", "zahtevnost", "trajanje_ur", "visinska_razlika_m", "opis", "lokacija"
+     "ime", "zacetna_lokacija", "zahtevnost", "trajanje_ur", "visinska_razlika_m", "opis", "lokacija"
     ]
     
     # Poskrbimo, da DataFrame vsebuje točno te stolpce v pravem vrstnem redu

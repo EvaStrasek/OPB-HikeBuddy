@@ -6,7 +6,7 @@ from typing import Optional
 @dataclass_json
 @dataclass
 class pohod:
-    id: int = field(default=0),
+    id: int = field(default=0)
     datum_zacetka: date=field(default=date.today)
     datum_konca: date=field(default=date.today)
     pot: int = field(default=0)
@@ -14,7 +14,7 @@ class pohod:
 @dataclass_json
 @dataclass
 class pohodDto:
-    id: int = field(default=0),
+    id: int = field(default=0)
     datum_zacetka: date=field(default=date.today)
     datum_konca: date=field(default=date.today)
     pot: int = field(default=0)

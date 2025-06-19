@@ -61,7 +61,9 @@ class Repo:
                 VALUES (%s, %s, %s, %s, %s, %s, %s) 
                 """, (p.ime, p.zacetna_lokacija, p.zahtevnost, p.trajanje_ur,
                       p.visinska_razlika_m, p.opis, p.lokacija))
+                
         self.conn.commit()
+        
 
     def posodobi_pot(self, p : pot):
         self.cur.execute("""

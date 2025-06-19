@@ -39,7 +39,7 @@ class PotiService:
 
     def dodaj_pot(self,ime : str, zacetna_lokacija :str, zahtevnost : str, trajanje_ur : float, visinka_razlika_m : float, opis : str, lokacija : str) -> None:
        
-        t = pot(
+        t = pot(None,
             ime = ime,
             zacetna_lokacija = zacetna_lokacija,
             zahtevnost= zahtevnost,

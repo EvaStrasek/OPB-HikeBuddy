@@ -25,7 +25,7 @@ class PohodiService:
     
     def dodaj_pohod(self, datum_zacetka : datetime, datum_konca: datetime, pot: int) -> None:
        
-        t = pohod(
+        t = pohod(None,
             datum_zacetka=datum_zacetka,
             datum_konca=datum_konca,
             pot=pot,

@@ -67,7 +67,7 @@ def transformiraj_pohode(df: pd.DataFrame) -> pd.DataFrame:
     
     # Definiramo vrstni red stolpcev, kot so definirani v tabeli
     columns = [
-        "id", "datum_zacetka", "datum_konca", "pot"
+         "datum_zacetka", "datum_konca", "pot"
     ]
     
     # Poskrbimo, da DataFrame vsebuje točno te stolpce v pravem vrstnem redu
