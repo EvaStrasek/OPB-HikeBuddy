@@ -118,13 +118,15 @@ def uredi_pot(id):
     """
     Stran za urejanje poti.  """   
     pot = nove_potiService.dobi_pot_dto(id)
-    return template_user('uredi_pot.html', pot = pot)
+    gore = goreService.dobi_vse_gore()
+    return template_user('uredi_pot.html', pot = pot, gore=gore)
 
 @get('/uredi_pohod/<id:int>')
 def uredi_pohod(id):
     """
     Stran za urejanje pohoda.  """   
     pohod = pohodiService.dobi_pohod_dto(id)
+    
     return template_user('uredi_pohod.html', pohod = pohod)
 
 @get('/dodaj_pohod')

@@ -148,6 +148,12 @@ class Gora:
     num_gps_paths: Optional[int]
     description: Optional[str]
     
+@dataclass_json
+@dataclass
+class goraDto:
+    mountain_id: int
+    name: str
+    
 # @dataclass
 # class Uporabnik:
 #     ime: str

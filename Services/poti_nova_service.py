@@ -88,3 +88,5 @@ class GoraPotService:
 
     def odstrani_pot(self, id: int):
         self.repo.odstrani_pot(id)
+
+    

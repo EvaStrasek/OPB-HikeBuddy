@@ -20,3 +20,6 @@ class GoraService:
     def posodobi_goro(self, gora: Gora):
         # Lahko preveriš, ali gora obstaja pred posodobitvijo
         self.repo.posodobi_goro(gora)
+    
+    def dobi_vse_gore(self):
+        return self.repo.dobi_vse_gore_dto()

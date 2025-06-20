@@ -59,3 +59,11 @@ class Repo:
             g.popularity, g.num_paths, g.num_gps_paths, g.description, g.mountain_id
         ))
         self.conn.commit()
+    
+    def dobi_vse_gore(self):
+        self.cur.execute("SELECT mountain_id, name FROM gore ORDER BY name")
+        return self.cur.fetchall()
+
+    def dobi_vse_gore_dto(self) -> List[goraDto]:
+        self.cur.execute("SELECT mountain_id, name FROM gore ORDER BY name")
+        return [goraDto.from_dict(g) for g in self.cur.fetchall()]
