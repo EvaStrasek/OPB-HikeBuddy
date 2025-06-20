@@ -90,7 +90,7 @@ class opremaDto:
 @dataclass
 class udelezenci:
     id: int = field(default=0) 
-    vloga: str=field(default="udeleženec")
+    rola: str=field(default="udeleženec")
     ime: str=field(default="")
     priimek: str=field(default="")
     telefon: str=field(default="")
@@ -100,7 +100,7 @@ class udelezenci:
 @dataclass
 class udelezenciDto:
     id: int = field(default=0) 
-    vloga: str=field(default="udeleženec")
+    rola: str=field(default="udeleženec")
     ime: str=field(default="")
     priimek: str=field(default="")
     telefon: str=field(default="")
@@ -117,7 +117,7 @@ class udelezenciDto:
 @dataclass
 class UporabnikDto:
     username: str = field(default="")
-    role: str = field(default="")
+    rola: str = field(default="udeleženec")
 
 
 # Newly added by Manca
@@ -166,7 +166,7 @@ class goraDto:
     
     
 class Uporabnik:
-    def __init__(self, id, ime, priimek, uporabnisko_ime, geslo, telefon, email, role="uporabnik"):
+    def __init__(self, id, ime, priimek, uporabnisko_ime, geslo, telefon, email, rola="udeleženec"):
         self.id = id
         self.ime = ime
         self.priimek = priimek
@@ -174,7 +174,7 @@ class Uporabnik:
         self.geslo = geslo
         self.telefon = telefon
         self.email = email
-        self.role = role
+        self.rola = rola
 
     @staticmethod
     def from_dict(row):
@@ -186,7 +186,7 @@ class Uporabnik:
             geslo=row.get("geslo"),
             telefon=row.get("telefon"),
             email=row.get("email"),
-            role=row.get("role", "uporabnik")
+            rola=row.get("rola", "udeleženec")
         )
         
         
@@ -195,7 +195,7 @@ class UporabnikDto:
     uporabnisko_ime: str = field(default="")
     ime: str = field(default="")
     priimek: str = field(default="")
-    role:  str = field(default="user")  # Default role can be 'user', 'admin', etc.
+    rola:  str = field(default="udeleženec")  # Default role can be 'user', 'admin', etc.
     
 class PrijavaNaPohod:
     def __init__(self, uporabnik_id: int, pohod_id: int, cas_prijave: datetime = None):

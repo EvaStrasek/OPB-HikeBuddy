@@ -33,7 +33,7 @@ def cookie_required(f):
     """
     @wraps(f)
     def decorated( *args, **kwargs):
-        cookie = request.get_cookie("uporabnik")
+        cookie = request.get_cookie("uporabnik", secret = "skrivnost")
         if cookie:
             return f(*args, **kwargs)
         return template("prijava.html",uporabnik=None, rola=None, napaka="Potrebna je prijava!")
@@ -306,7 +306,7 @@ def registracija_post():
         traceback.print_exc()
         return template('registracija', napaka=f"Napaka pri registraciji: {e}")
     
-    redirect(url('/odjava'))
+    return redirect(url('/prijava'))
 
 @get('/prijava')
 def prijava_get():
@@ -325,8 +325,9 @@ def prijava():
     prijava = auth.prijavi_uporabnika(username, password)
     if prijava:
         response.set_cookie("uporabnisko_ime", username, secret="skrivnost", path='/')
-        response.set_cookie("rola", getattr(prijava, 'role', 'uporabnik'), path='/')  # če nimaš role, privzeto uporabnik
-        redirect(url('/'))
+        response.set_cookie("rola", prijava.rola, secret="skrivnost", path='/')
+        print("Rola v piškotku:", request.get_cookie("rola", secret="skrivnost"))
+        return redirect(url('/'))
     else:
         return template("prijava.html", napaka="Neuspešna prijava. Napačno geslo ali uporabniško ime.", uporabnik=None, rola=None)
 
@@ -337,8 +338,9 @@ def odjava():
     Odjavi uporabnika iz aplikacije. Pobriše piškotke o uporabniku in njegovi roli.
     """
   
-    response.delete_cookie("uporabnisko_ime", path='/')
-    response.delete_cookie("rola", path='/')
+    response.delete_cookie("uporabnisko_ime", path='/', secret="skrivnost")
+    response.delete_cookie("rola", path='/', secret="skrivnost")
+
     
     #redirect('/odjava')
     return template('prijava.html', uporabnik=None, rola=None, napaka=None) 
@@ -362,8 +364,9 @@ def prikazi_pohode():
     #    uporabnik_id = auth.dobi_id_uporabnika(uporabnisko_ime)
     #    if uporabnik_id:
         prijave = auth.pridobi_prijave_uporabnika(uporabnisko_ime)  # vrne seznam prijav
+    rola = request.get_cookie("rola", secret="skrivnost")
 
-    return template('pohodi', pohodi=pohodi, flash_msg=flash_msg, prijave=prijave, rola=None, uporabnisko_ime=uporabnisko_ime)
+    return template('pohodi', pohodi=pohodi, flash_msg=flash_msg, prijave=prijave, rola=rola, uporabnisko_ime=uporabnisko_ime)
 
 
 @post('/prijava_na_pohod')
