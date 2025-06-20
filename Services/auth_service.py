@@ -23,7 +23,8 @@ class AuthService:
             uporabnisko_ime=uporabnisko_ime,
             geslo=geslo_hash,
             telefon=telefon,
-            email=email
+            email=email,
+            rola="udeleženec"
         )
 
         self.repo.dodaj_uporabnika(uporabnik)
@@ -35,13 +36,13 @@ class AuthService:
     def prijavi_uporabnika(self, uporabnisko_ime: str, geslo: str) -> UporabnikDto | bool:
         try:
             user = self.repo.pridobi_uporabnika_po_uporabniskem_imenu(uporabnisko_ime)
-            
+            print("Pridobljen uporabnik:", user.__dict__)
         except Exception:
             
             return False
         if bcrypt.checkpw(geslo.encode('utf-8'), user.geslo.encode('utf-8')):
-            
-            return UporabnikDto(uporabnisko_ime=user.uporabnisko_ime, ime=user.ime, priimek=user.priimek, role=user.role)
+            print("Rola iz uporabnika:", user.rola)
+            return UporabnikDto(uporabnisko_ime=user.uporabnisko_ime, ime=user.ime, priimek=user.priimek, rola=user.rola)
         else:
             
             return False

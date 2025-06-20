@@ -29,10 +29,10 @@ class Repo:
     def dodaj_uporabnika(self, uporabnik: Uporabnik):
         """Shrani uporabnika v bazo s hashiranim geslom."""
         self.cur.execute("""
-            INSERT INTO uporabniki (ime, priimek, uporabnisko_ime, geslo, telefon, email)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            INSERT INTO uporabniki (ime, priimek, uporabnisko_ime, geslo, telefon, email, rola)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
         """, (uporabnik.ime, uporabnik.priimek, uporabnik.uporabnisko_ime,
-        uporabnik.geslo, uporabnik.telefon, uporabnik.email))
+        uporabnik.geslo, uporabnik.telefon, uporabnik.email,getattr(uporabnik, 'rola', 'udelezenec')))
         self.conn.commit()
 
     def pridobi_uporabnika_po_uporabniskem_imenu(self, uporabnisko_ime: str) -> Uporabnik:
