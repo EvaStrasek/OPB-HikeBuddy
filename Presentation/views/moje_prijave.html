@@ -2,23 +2,24 @@
 
 <h2>Moje prijave na pohode</h2>
 % if flash_msg:
-    <div class="flash-msg">
-        {{flash_msg}}
-    </div>
+<div class="flash-msg">
+  {{flash_msg}}
+</div>
 % end
 % if prijave:
-  <ul class="list-group">
-    % for prijava in prijave:
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <div>
-          {{prijava['pot_ime']}} ({{prijava['datum_zacetka']}} – {{prijava['datum_konca']}})
-        </div>
-        <form method="post" action="{{url('/odjava_na_pohod')}}" style="margin:0;">
-          <input type="hidden" name="pohod_id" value="{{prijava['pohod_id']}}">
-          <button type="submit" class="btn btn-danger btn-sm">Odjavi se</button>
-        </form>
-      </li>
-    % end
-  </ul>
+<ul class="list-group">
+  % for prijava in prijave:
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      {{prijava[3]}} ({{prijava[4]}} – {{prijava[5]}})
+    </div>
+    <form method="post" action="{{url('/odjava_na_pohod')}}" style="margin:0;">
+      <input type="hidden" name="pohod_id" value="{{prijava[2]}}">
+      <button type="submit" class="btn btn-danger btn-sm">Odjavi se</button>
+    </form>
+  </li>
+  % end
+</ul>
+
 % end
 

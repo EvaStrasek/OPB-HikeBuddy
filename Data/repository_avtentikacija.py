@@ -4,6 +4,8 @@ import Data.auth as auth
 from Data.models import Uporabnik
 import os
 import bcrypt
+from datetime import datetime
+
 
 DB_PORT = os.environ.get('POSTGRES_PORT', 5432)
 
@@ -64,13 +66,13 @@ class Repo:
                 p.id AS pohod_id,
                 pp.uporabnik_id,
                 pp.pohod_id,
-                poti.ime AS pot_ime,
+                poti_po_gorah.route_name AS pot_ime,
                 p.datum_zacetka,
                 p.datum_konca
             FROM prijava_na_pohod pp
             JOIN uporabniki u ON pp.uporabnik_id = u.id
             JOIN pohodi2 p ON pp.pohod_id = p.id
-            JOIN poti ON p.pot = poti.id
+            JOIN poti_po_gorah ON p.pot = poti_po_gorah.id
             WHERE u.uporabnisko_ime = %s
             ORDER BY p.datum_zacetka
         """, (uporabnisko_ime,))
@@ -101,5 +103,4 @@ class Repo:
             ORDER BY pr.cas_prijave DESC
         """)
         return self.cur.fetchall()
-
 
