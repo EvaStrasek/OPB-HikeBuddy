@@ -2,46 +2,57 @@
 
 
 <form action="{{url('/dodaj_pot')}}" method="POST" accept-charset="UTF-8" style="width: 60%; margin-left: 5%;">
-    <div >
-    <div class="form-group">
-        <label for="ime">Ime poti</label>
-        <input type="text" class="form-control" name="ime" id="ime">
-    </div>
-    <div class="form-group">
-        <label for="zacetna_lokacija">Začetna lokacija</label>
-        <input class="form-control" type="text" name="zacetna_lokacija"></input>      
-    </div>
-    <div class="form-group">
-        <label for="zahtevnost">Zahtevnost</label>
-        <input class="form-control" type="text" name="zahtevnost"></input>      
-    </div>
-    <div class="form-group">
-        <label for="trajanje_ur">Trajanje</label>
-        <input class="form-control" type="number" name="trajanje_ur"></input>      
-    </div>
-    <div class="form-group">
-        <label for="visinska_razlika_m">Višinska razlika</label>
-        <input class="form-control" type="number" name="visinska_razlika_m"></input>      
-    </div>
-    <div class="form-group">
-        <label for="opis">Opis</label>
-        <input class="form-control" type="text" name="opis"></input>      
-    </div>
-    <div class="form-group">
-        <label for="lokacija">Lokacija</label>
-        <input class="form-control" type="text" name="lokacija"></input>      
-    </div>
-    <div class="form-group">
-        <label for="pol">Poletna Oprema</label>
-        <input class="form-control" type="text" name="poletna"></input>      
-    </div>
-    <div class="form-group">
-        <label for="zim">Zimska Oprema</label>
-        <input class="form-control" type="text" name="zimska"></input>      
-    </div>
-    <br>
 
-    <button type="submit" class="btn btn-primary mt-3">Dodaj pot</button>
+    <div>
+        <div class="form-group">
+            <label for="izbrana_pot">Gora</label>
+            
+                <select name="izbrana_pot">
+                    % for gora in gore:
+                    <option value="{{ gora.mountain_id }}">{{ gora.name }}</option>
+                    % end
+                </select>
+            
+        </div>
+        <div class="form-group">
+            <label for="ime">Ime poti</label>
+            <input type="text" class="form-control" name="ime" id="ime">
+        </div>
+        <div class="form-group">
+            <label for="zacetna_lokacija">Začetna lokacija</label>
+            <input class="form-control" type="text" name="zacetna_lokacija"></input>
+        </div>
+        <div class="form-group">
+            <label for="zahtevnost">Zahtevnost</label>
+            <input class="form-control" type="text" name="zahtevnost"></input>
+        </div>
+        <div class="form-group">
+            <label for="trajanje_ur">Trajanje</label>
+            <input class="form-control" type="number" name="trajanje_ur"></input>
+        </div>
+        <div class="form-group">
+            <label for="visinska_razlika_m">Višinska razlika</label>
+            <input class="form-control" type="number" name="visinska_razlika_m"></input>
+        </div>
+        <div class="form-group">
+            <label for="opis">Opis</label>
+            <input class="form-control" type="text" name="opis"></input>
+        </div>
+        <div class="form-group">
+            <label for="lokacija">Lokacija</label>
+            <input class="form-control" type="text" name="lokacija"></input>
+        </div>
+        <div class="form-group">
+            <label for="pol">Poletna Oprema</label>
+            <input class="form-control" type="text" name="poletna"></input>
+        </div>
+        <div class="form-group">
+            <label for="zim">Zimska Oprema</label>
+            <input class="form-control" type="text" name="zimska"></input>
+        </div>
+        <br>
+
+        <button type="submit" class="btn btn-primary mt-3">Dodaj pot</button>
 
     </div>
-  </form>
+</form>

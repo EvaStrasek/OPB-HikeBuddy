@@ -146,6 +146,7 @@ def uredi_pohod(id):
 def dodaj_pohod():
     """
     Stran za dodajanje pohodov.  """
+    
     poti = nove_potiService.dobi_poti_dto()   
     return template_user('dodaj_pohod.html', poti=poti)
 
@@ -155,8 +156,9 @@ def dodaj_pot():
     """
     Stran za dodajanje poti.  """
     
-    poti = nove_potiService.dobi_poti_dto()  
-    return template_user('dodaj_pot.html', poti=poti)
+    poti = nove_potiService.dobi_poti_dto()
+    gore = goreService.dobi_vse_gore() 
+    return template_user('dodaj_pot.html', poti=poti, gore=gore)
 
 @post('/dodaj_pohod')
 @admin_required
@@ -184,7 +186,8 @@ def dodaj_pot_post():
 
     from urllib.parse import parse_qs
     form_data = parse_qs(decoded_body)
-
+    
+    
     mountain_id = int(form_data.get('mountain_id', [0])[0])
     route_name = form_data.get('route_name', [''])[0]
     route_difficulty = form_data.get('route_difficulty', [''])[0]
