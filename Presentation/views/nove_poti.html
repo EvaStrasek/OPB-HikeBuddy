@@ -2,9 +2,11 @@
 
 <div>
   <h2>Seznam vseh poti</h2>
+  % if rola == 'admin':
   <a href="{{url('/dodaj_pot')}}" class="btn btn-light">
     Dodaj novo pot
   </a>
+  % end
 
   <br><br>
 
@@ -46,9 +48,11 @@
               <td>{{pot.height_diff}}</td>
               <td>{{pot.gear_summer}}</td>
               <td>{{pot.gear_winter}}</td>
+              % if rola == 'admin':
               <td>
                 <a href="{{url('uredi_pot', id=pot.id)}}">Uredi</a>
               </td>
+              % end
             </tr>
           %end
         </tbody>
